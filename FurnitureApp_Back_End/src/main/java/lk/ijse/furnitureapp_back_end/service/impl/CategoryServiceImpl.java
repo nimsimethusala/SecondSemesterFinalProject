@@ -42,11 +42,11 @@ public class CategoryServiceImpl implements CategoryService {
             categoryRepository.deleteById(categoryId);
             return VarList.OK;
         }
-        return VarList.Not_Found; // Return a proper response code if the category doesn't exist
+        return VarList.Not_Found;
     }
 
     @Override
-    public int updateCategory(Long categoryId, CategoryDto category) {
+    public int updateCategory(String categoryId, CategoryDto category) {
         Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
 
         if (categoryOptional.isPresent()) {

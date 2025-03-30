@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/categories")
@@ -53,6 +54,7 @@ public class CategoryController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseDTO> delete(@PathVariable String categoryId) {
         try {
+            System.out.println("vvvvvvvvvvvvvvv"+categoryId);
             int res = categoryService.deleteCategory(categoryId); // Implement this method in service
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseDTO(VarList.OK, "Category Deleted Successfully", res));
@@ -64,10 +66,10 @@ public class CategoryController {
 
     @PutMapping("/update/{categoryId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ResponseDTO> update(@PathVariable String categoryId, @RequestBody CategoryDto category) {
+    public ResponseEntity<ResponseDTO> update(@PathVariable String categoryId, @Valid @RequestBody CategoryDto category) {
         try {
-            category.setCategoryId(categoryId); // Ensure ID is set
-            int res = categoryService.updateCategory(category);
+            category.setCategoryId(UUID.fromString(categoryId));
+            int res = categoryService.updateCategory(categoryId, category);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseDTO(VarList.OK, "Category Updated Successfully", res));
         } catch (Exception e) {

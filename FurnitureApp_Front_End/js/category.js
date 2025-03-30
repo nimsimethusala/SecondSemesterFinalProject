@@ -10,10 +10,6 @@ $(document).ready(function () {
                 let tableBody = $("#categoryTable");
                 tableBody.empty();
                 $.each(response.data, function (index, category) {
-                    console.log(category)
-                    console.log("aaaaaaaaaaaaaaa"+category.status)
-                    console.log("xxxxxxxx"+category.name)
-                    console.log("ggggggggg"+category.id)
                     tableBody.append(`
                         <tr>
                             <td>${category.categoryId}</td>
@@ -21,7 +17,7 @@ $(document).ready(function () {
                             <td>${category.status}</td>
                             <td>
                                 <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#categoryModal" id="updateCategoryBtn" data-id="${category.id}"><i class="fas fa-edit"></i></button>
-                                <button class="deleteCategory btn btn-sm btn-danger" data-id="${category.id}"><i class="fas fa-trash"></i></button>
+                                <button class="deleteCategory btn btn-sm btn-danger" data-id="${category.categoryId}"><i class="fas fa-trash"></i></button>
                             </td>
                         </tr>
                     `);
@@ -78,7 +74,7 @@ $(document).ready(function () {
 
         if (confirm("Are you sure you want to delete this category?")) {
             $.ajax({
-                url: `http://localhost:8080/api/v1/categories/categories/${categoryId}`,
+                url: `http://localhost:8080/api/v1/categories/delete/${categoryId}`,
                 method: "DELETE",
                 headers: { "Authorization": "Bearer " + token },
                 success: function () {

@@ -9,7 +9,7 @@ public interface CategoryService {
 
     int deleteCategory(String categoryId);
 
-    int updateCategory(CategoryDto category);
+    int updateCategory(String categoryId, CategoryDto category);
 
     List<CategoryDto> getAllCategories();
 }
