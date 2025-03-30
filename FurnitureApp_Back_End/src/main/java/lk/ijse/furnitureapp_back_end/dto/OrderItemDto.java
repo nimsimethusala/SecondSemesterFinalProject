@@ -1,0 +1,21 @@
+package lk.ijse.furnitureapp_back_end.dto;
+
+import jakarta.persistence.*;
+import lk.ijse.furnitureapp_back_end.entity.Order;
+import lk.ijse.furnitureapp_back_end.entity.Product;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.UUID;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class OrderItemDto {
+    private UUID id;
+    private Order order;
+    private Product product;
+    private int quantity;
+    private double price;
+}

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - FurniDesign</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --darkest: #10002B;
+      --darker: #240046;
+      --dark: #3C096C;
+      --medium-dark: #5A189A;
+      --medium: #7B2CBF;
+      --medium-light: #9D4EDD;
+      --light: #C77DFF;
+      --lightest: #E0AAFF;
+      --white: #FFFFFF;
+      --gray: #858796;
+      --light-gray: #f8f9fc;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--darker);
+      background-color: var(--light-gray);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .login-card {
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(16, 0, 43, 0.1);
+    }
+
+    .login-image {
+      background: linear-gradient(rgba(60, 9, 108, 0.7), rgba(123, 44, 191, 0.7)), url('/api/placeholder/600/800') center/cover no-repeat;
+      height: 100%;
+      min-height: 500px;
+    }
+
+    .login-form {
+      padding: 40px;
+    }
+
+    .btn-primary {
+      background-color: var(--medium);
+      border-color: var(--medium);
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--medium-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(123, 44, 191, 0.3);
+    }
+
+    .form-control {
+      border-radius: 30px;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: 1px solid #ced4da;
+      margin-bottom: 20px;
+    }
+
+    .form-control:focus {
+      box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.25);
+      border-color: var(--medium-light);
+    }
+
+    .login-title {
+      font-weight: 700;
+      margin-bottom: 30px;
+      color: var(--darker);
+    }
+
+    .login-link {
+      color: var(--medium);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .login-link:hover {
+      color: var(--medium-dark);
+      text-decoration: underline;
+    }
+
+    .social-login {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .social-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .google {
+      background-color: var(--medium-dark);
+    }
+
+    .facebook {
+      background-color: var(--dark);
+    }
+
+    .twitter {
+      background-color: var(--medium);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 30px 0;
+    }
+
+    .divider-line {
+      flex-grow: 1;
+      height: 1px;
+      background-color: var(--lightest);
+    }
+
+    .divider-text {
+      padding: 0 15px;
+      color: var(--medium);
+      font-size: 14px;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--medium-dark);
+      display: inline-block;
+      margin-bottom: 30px;
+      text-decoration: none;
+    }
+
+    /* Additional styles for purple theme */
+    .form-label {
+      color: var(--dark);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .form-check-input:checked {
+      background-color: var(--medium);
+      border-color: var(--medium);
+    }
+
+    .form-check-label {
+      color: var(--gray);
+    }
+
+    .forgot-password {
+      color: var(--medium-light);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .forgot-password:hover {
+      color: var(--medium);
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 20px;
+      color: var(--gray);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+<div class="container login-container">
+  <div class="card login-card">
+    <div class="row g-0">
+      <div class="col-md-6 d-none d-md-block">
+        <div class="login-image"></div>
+      </div>
+      <div class="col-md-6">
+        <div class="login-form">
+          <a href="index.html" class="logo">Furni<span style="color: var(--secondary);">Design</span></a>
+          <h2 class="login-title">Welcome Back</h2>
+          <p class="text-muted mb-4">Please sign in to continue to your account</p>
+
+          <form id="loginForm">
+            <div class="mb-3">
+              <input type="email" class="form-control" id="email" placeholder="Email Address" required>
+            </div>
+            <div class="mb-4">
+              <input type="password" class="form-control" id="password" placeholder="Password" required>
+            </div>
+            <div class="d-flex justify-content-between mb-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">Remember me</label>
+              </div>
+              <a href="#" class="login-link">Forgot Password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary">Log In</button>
+          </form>
+
+          <div class="divider">
+            <div class="divider-line"></div>
+            <span class="divider-text">OR CONTINUE WITH</span>
+            <div class="divider-line"></div>
+          </div>
+
+          <div class="social-login">
+            <a href="#" class="social-btn google"><i class="fab fa-google"></i></a>
+            <a href="#" class="social-btn facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-btn twitter"><i class="fab fa-twitter"></i></a>
+          </div>
+
+          <p class="text-center mt-4">
+            Don't have an account? <a href="signup.html" class="login-link">Sign Up</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Here you would normally handle the form submission to your Spring Boot backend
+    // using fetch API or axios to send the JWT auth request
+
+    // For demo purposes, redirect to the design dashboard
+    window.location.href = 'design-dashboard.html';
+  });
+</script>
+</body>
+</html>

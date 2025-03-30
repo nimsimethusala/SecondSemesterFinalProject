@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Furniture - Sign In</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1A1A2E;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .signin-container {
+            background-color: #16213E;
+            border-radius: 15px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .form-control {
+            background-color: #0F3460;
+            border: none;
+            color: white;
+        }
+        .form-control:focus {
+            background-color: #0F3460;
+            color: white;
+            box-shadow: none;
+            border-color: #E94560;
+        }
+        .btn-primary {
+            background-color: #E94560;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #ff3a5e;
+        }
+        .navbar {
+            background-color: #1A1A2E;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+        .signup-btn {
+            background-color: #E94560;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .signup-btn:hover {
+            background-color: #ff3a5e;
+        }
+        .text-highlight {
+            color: #E94560;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <h2>Furniture</h2>
+    <button class="signup-btn" id="signUpbtn">Sign Up</button>
+</nav>
+
+<div class="signin-container">
+    <h2 class="text-center mb-4">Sign In</h2>
+    <form id="signinForm">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="john@example.com" required>
+            <div class="invalid-feedback" id="emailError"></div>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="********" required>
+            <div class="invalid-feedback" id="passwordError"></div>
+        </div>
+        <div id="serverError" class="alert alert-danger" style="display: none;"></div>
+        <button type="button" class="btn btn-primary w-100 mt-3" id="btnSignIn">Sign In</button>
+        <div class="text-center mt-3">
+            <p>Don't have an account? <a href="SignUp.html" class="text-highlight">Sign Up</a></p>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="lib/jquery-3.7.1.min.js"></script>
+<script>
+    const apiUrl = "http://localhost:8080/api/v1/auth/authenticate";
+
+    $(document).ready(function () {
+        $("#signUpbtn").click(function () {
+            window.location.href = "signup.html"; // Change this to your actual Sign-Up page URL
+        });
+
+        $("#btnSignIn").click(function (e) {
+            e.preventDefault();
+
+            let credentials = {
+                email: $("#email").val(),
+                password: $("#password").val()
+            };
+
+            $.ajax({
+                url: apiUrl,
+                type: "POST",
+                data: JSON.stringify(credentials),
+                contentType: "application/json",
+                success: function (response) {
+                    console.log(response.data.token)
+                    localStorage.setItem("token", response.data.token);
+                    localStorage.setItem("email", response.data.email);
+
+                    console.log(response.data.token);
+                    console.log(response.data.email);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Logged in successfully!',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+
+                    if (response.data.role === "ADMIN") {
+                        window.location.href = "index.html";
+                    } else {
+                        window.location.href = "Dashboard.html";
+                    }
+                },
+                error: function (xhr) {
+                    let errorMessage = xhr.responseJSON ? xhr.responseJSON.message : "Authentication failed";
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: errorMessage
+                    });
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
