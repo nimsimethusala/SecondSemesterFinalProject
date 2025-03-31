@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -16,6 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 
 /**
@@ -54,10 +58,10 @@ public class WebSecurityConfig {
                                 "/api/v1/auth/authenticate",
                                 "/api/v1/user/register",
                                 "/api/v1/auth/refreshToken",
-                                "/api/v1/categories/save",
                                 "/v3/api-docs/**",
                                 "/api/v1/users/all",
                                 "/api/v1/categories/getAll",
+                                "/api/v1/products/getAll",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html").permitAll()
 
@@ -65,8 +69,20 @@ public class WebSecurityConfig {
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors(Customizer.withDefaults())//$60+$60
                 .build();
     }
 
+    @Bean
+    public CorsFilter corsFilter(){
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration configure = new CorsConfiguration();
+        configure.setAllowCredentials(true);
+        configure.addAllowedOrigin("http://localhost:63342");
+        configure.addAllowedHeader("*");
+        configure.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", configure);
+        return new CorsFilter(source);
+    }
 
 }

@@ -1,9 +1,9 @@
 package lk.ijse.furnitureapp_back_end.controller;
 
 import jakarta.validation.Valid;
-import lk.ijse.furnitureapp_back_end.dto.CategoryDto;
+import lk.ijse.furnitureapp_back_end.dto.ProductDto;
 import lk.ijse.furnitureapp_back_end.dto.ResponseDTO;
-import lk.ijse.furnitureapp_back_end.service.CategoryService;
+import lk.ijse.furnitureapp_back_end.service.ProductService;
 import lk.ijse.furnitureapp_back_end.util.VarList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,23 +14,21 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/categories")
-public class CategoryController {
+@RequestMapping("api/v1/products")
+public class ProductController {
 
-    private final CategoryService categoryService;
+    private final ProductService productService;
 
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping("/getAll")
-//    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public ResponseEntity<ResponseDTO> getAll() {
         try {
-            List<CategoryDto> categories = categoryService.getAllCategories();
-            System.out.println(categories);
+            List<ProductDto> products = productService.getAllProducts();
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseDTO(VarList.OK, "Categories Retrieved Successfully", categories));
+                    .body(new ResponseDTO(VarList.OK, "Products Retrieved Successfully", products));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
@@ -39,40 +37,38 @@ public class CategoryController {
 
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ResponseDTO> save(@Valid @RequestBody CategoryDto category) {
+    public ResponseEntity<ResponseDTO> save(@Valid @RequestBody ProductDto product) {
         try {
-            int res = categoryService.saveCategory(category);
+            int res = productService.saveProduct(product);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ResponseDTO(VarList.Created, "Category Saved Successfully", res));
+                    .body(new ResponseDTO(VarList.Created, "Product Saved Successfully", res));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
         }
     }
 
-    @PostMapping("/delete/{categoryId}")
+    @DeleteMapping("/delete/{productId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ResponseDTO> delete(@PathVariable String categoryId) {
-        System.out.println(categoryId);
+    public ResponseEntity<ResponseDTO> delete(@PathVariable String productId) {
         try {
-            int res = categoryService.deleteCategory(categoryId);
+            int res = productService.deleteProduct(productId);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseDTO(VarList.OK, "Category Deleted Successfully", res));
+                    .body(new ResponseDTO(VarList.OK, "Product Deleted Successfully", res));
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
         }
     }
 
-    @PutMapping("/update/{categoryId}")
+    @PutMapping("/update/{productId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ResponseDTO> update(@PathVariable String categoryId, @Valid @RequestBody CategoryDto category) {
+    public ResponseEntity<ResponseDTO> update(@PathVariable String productId, @Valid @RequestBody ProductDto product) {
         try {
-            category.setCategoryId(UUID.fromString(categoryId));
-            int res = categoryService.updateCategory(categoryId, category);
+            product.setProductId(UUID.fromString(productId));
+            int res = productService.updateProduct(productId, product);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseDTO(VarList.OK, "Category Updated Successfully", res));
+                    .body(new ResponseDTO(VarList.OK, "Product Updated Successfully", res));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));

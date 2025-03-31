@@ -1,5 +1,6 @@
 $(document).ready(function () {
     let token = localStorage.getItem("token");
+    console.log(token)
 
     function loadCategories() {
         $.ajax({
@@ -28,7 +29,7 @@ $(document).ready(function () {
 
     loadCategories();
 
-    $("#addCategoryForm").on("click",function (e) {
+    $("#addCategoryForm").on("click", function (e) {
         e.preventDefault();
         let categoryData = {
             name: $("#categoryName").val(),
@@ -39,7 +40,7 @@ $(document).ready(function () {
             url: "http://localhost:8080/api/v1/categories/save",
             method: "POST",
             contentType: "application/json",
-            headers: { "Authorization": "Bearer " + token },
+            headers: {"Authorization": "Bearer " +  localStorage.getItem("token")},
             data: JSON.stringify(categoryData),
             success: function () {
                 loadCategories();
@@ -58,7 +59,7 @@ $(document).ready(function () {
             url: `http://localhost:8080/api/v1/categories/update/${categoryId}`,
             method: "PUT",
             contentType: "application/json",
-            headers: { "Authorization": "Bearer " + token },
+            headers: {"Authorization": "Bearer " + token},
             data: JSON.stringify(categoryData),
             success: function () {
                 loadCategories();
@@ -75,8 +76,8 @@ $(document).ready(function () {
         if (confirm("Are you sure you want to delete this category?")) {
             $.ajax({
                 url: `http://localhost:8080/api/v1/categories/delete/${categoryId}`,
-                method: "DELETE",
-                headers: { "Authorization": "Bearer " + token },
+                method: "POST",
+                headers: {"Authorization": "Bearer " + token, "Access-Control-Allow-Origin": "*"},
                 success: function () {
                     loadCategories();
                 }

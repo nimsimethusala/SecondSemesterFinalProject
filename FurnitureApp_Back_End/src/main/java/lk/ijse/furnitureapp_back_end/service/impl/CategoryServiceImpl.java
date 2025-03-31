@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,9 +38,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public int deleteCategory(String categoryId) {
-        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
+        Optional<Category> categoryOptional = categoryRepository.findById(UUID.fromString(categoryId));
         if (categoryOptional.isPresent()) {
-            categoryRepository.deleteById(categoryId);
+            categoryRepository.deleteById(UUID.fromString(categoryId));
             return VarList.OK;
         }
         return VarList.Not_Found;
@@ -47,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public int updateCategory(String categoryId, CategoryDto category) {
-        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
+        Optional<Category> categoryOptional = categoryRepository.findById(UUID.fromString(categoryId));
 
         if (categoryOptional.isPresent()) {
             Category existingCategory = categoryOptional.get();

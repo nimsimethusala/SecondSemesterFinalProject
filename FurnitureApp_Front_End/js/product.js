@@ -1,122 +1,157 @@
-// document.addEventListener("DOMContentLoaded", () => {
-//     let selectedProductId = null; // Store the product ID for editing
-//
-//     // Load products from the server
-//     function loadProducts() {
-//         fetch("/api/products")
-//             .then(response => response.json())
-//             .then(data => {
-//                 renderProducts(data);
-//             })
-//             .catch(error => console.error("Error fetching products:", error));
-//     }
-//
-//     // Render Products in Table
-//     function renderProducts(products) {
-//         const productTableBody = document.querySelector("#productTableBody");
-//         productTableBody.innerHTML = "";
-//
-//         products.forEach((product) => {
-//             const row = document.createElement("tr");
-//             row.innerHTML = `
-//                 <td>${product.id}</td>
-//                 <td>${product.name}</td>
-//                 <td>${product.category}</td>
-//                 <td>${product.price}</td>
-//                 <td class="table-actions">
-//                     <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#productUpdateModal" onclick="editProduct(${product.id})">
-//                         <i class="fas fa-edit"></i>
-//                     </button>
-//                     <button class="btn btn-sm btn-danger" onclick="deleteProduct(${product.id})">
-//                         <i class="fas fa-trash"></i>
-//                     </button>
-//                 </td>
-//             `;
-//             productTableBody.appendChild(row);
-//         });
-//     }
-//
-//     // Add Product
-//     document.getElementById("saveProductBtn").addEventListener("click", () => {
-//         const name = document.getElementById("newProductName").value.trim();
-//         const category = document.getElementById("newProductCategory").value;
-//         const price = document.getElementById("newProductPrice").value.trim();
-//         const description = document.getElementById("newProductDescription").value.trim();
-//
-//         if (!name || !price) {
-//             alert("Product name and price are required!");
-//             return;
-//         }
-//
-//         const newProduct = { name, category, price, description };
-//
-//         fetch("/api/products", {
-//             method: "POST",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify(newProduct)
-//         })
-//             .then(response => response.json())
-//             .then(() => {
-//                 loadProducts();
-//                 document.getElementById("addProductForm").reset();
-//                 bootstrap.Modal.getInstance(document.getElementById("productAddModal")).hide();
-//             })
-//             .catch(error => console.error("Error adding product:", error));
-//     });
-//
-//     // Edit Product (Populate Modal)
-//     window.editProduct = (id) => {
-//         fetch(`/api/products/${id}`)
-//             .then(response => response.json())
-//             .then(product => {
-//                 selectedProductId = product.id;
-//
-//                 document.getElementById("productName").value = product.name;
-//                 document.getElementById("productCategory").value = product.category;
-//                 document.getElementById("productPrice").value = product.price;
-//                 document.getElementById("productDescription").value = product.description;
-//             })
-//             .catch(error => console.error("Error fetching product:", error));
-//     };
-//
-//     // Update Product
-//     document.getElementById("updateProductBtn").addEventListener("click", () => {
-//         if (!selectedProductId) return;
-//
-//         const name = document.getElementById("productName").value.trim();
-//         const category = document.getElementById("productCategory").value;
-//         const price = document.getElementById("productPrice").value.trim();
-//         const description = document.getElementById("productDescription").value.trim();
-//
-//         if (!name || !price) {
-//             alert("Product name and price are required!");
-//             return;
-//         }
-//
-//         const updatedProduct = { name, category, price, description };
-//
-//         fetch(`/api/products/${selectedProductId}`, {
-//             method: "PUT",
-//             headers: { "Content-Type": "application/json" },
-//             body: JSON.stringify(updatedProduct)
-//         })
-//             .then(response => response.json())
-//             .then(() => {
-//                 loadProducts();
-//                 bootstrap.Modal.getInstance(document.getElementById("productUpdateModal")).hide();
-//             })
-//             .catch(error => console.error("Error updating product:", error));
-//     });
-//
-//     // Delete Product
-//     window.deleteProduct = (id) => {
-//         if (!confirm("Are you sure you want to delete this product?")) return;
-//
-//         fetch(`/api/products/${id}`, { method: "DELETE" })
-//             .then(() => loadProducts())
-//             .catch(error => console.error("Error deleting product:", error));
-//     };
-//
-//     // Load products on page load
-//     loadProducts();
-// });
+$(document).ready(function () {
+    let token = localStorage.getItem("token");
+
+    // Function to load products
+    function loadProducts() {
+        $.ajax({
+            url: "http://localhost:8080/api/v1/products/getAll",
+            method: "GET",
+            headers: { "Authorization": "Bearer " + token },
+            success: function (response) {
+                let tableBody = $("#productTable");
+                tableBody.empty();
+                $.each(response.data, function (index, product) {
+                    tableBody.append(`
+                        <tr>
+                            <td>${product.productId}</td>
+                            <td>${product.name}</td>
+                            <td>${product.category}</td>
+                            <td>${product.price}</td>
+                            <td>
+                                <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#productModal" id="updateProductBtn" data-id="${product.productId}"><i class="fas fa-edit"></i></button>
+                                <button class="deleteProduct btn btn-sm btn-danger" data-id="${product.productId}"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+        });
+    }
+
+    // Load products on page load
+    loadProducts();
+
+    // Add new product
+    $("#saveProductBtn").click(function (e) {
+        e.preventDefault();
+        let productData = {
+            name: $("#productName").val(),
+            category: $("#productCategory").val(),
+            price: $("#productPrice").val(),
+            description: $("#productDescription").val(),
+            image: $("#productImage")[0].files[0] // Image file
+        };
+
+        let formData = new FormData();
+        for (const key in productData) {
+            formData.append(key, productData[key]);
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/products/save",
+            method: "POST",
+            contentType: false,
+            processData: false,
+            headers: { "Authorization": "Bearer " + token },
+            data: formData,
+            success: function () {
+                loadProducts();
+                $("#productModal").modal("hide");  // Close modal after saving
+                $("#productForm")[0].reset();  // Reset form
+            }
+        });
+    });
+
+    // Update existing product
+    $(document).on("click", "#updateProductBtn", function () {
+        let productId = $(this).data("id");
+
+        // Load product details into the modal form for editing
+        $.ajax({
+            url: `http://localhost:8080/api/v1/products/getById/${productId}`,
+            method: "GET",
+            headers: { "Authorization": "Bearer " + token },
+            success: function (response) {
+                let product = response.data;
+                $("#productName").val(product.name);
+                $("#productCategory").val(product.category);
+                $("#productPrice").val(product.price);
+                $("#productDescription").val(product.description);
+                // You can handle image preview here if needed
+
+                $("#saveProductBtn").hide();  // Hide the Add button
+                $("#updateProductBtn").show();  // Show the Update button
+                $("#updateProductBtn").data("id", productId);  // Store product ID for update
+            }
+        });
+    });
+
+    // Update the product via PUT
+    $("#updateProductBtn").click(function () {
+        let productId = $(this).data("id");
+
+        let productData = {
+            name: $("#productName").val(),
+            category: $("#productCategory").val(),
+            price: $("#productPrice").val(),
+            description: $("#productDescription").val(),
+            image: $("#productImage")[0].files[0]
+        };
+
+        let formData = new FormData();
+        for (const key in productData) {
+            formData.append(key, productData[key]);
+        }
+
+        $.ajax({
+            url: `http://localhost:8080/api/v1/products/update/${productId}`,
+            method: "PUT",
+            contentType: false,
+            processData: false,
+            headers: { "Authorization": "Bearer " + token },
+            data: formData,
+            success: function () {
+                loadProducts();
+                $("#productModal").modal("hide");  // Close modal after saving
+                $("#productForm")[0].reset();  // Reset form
+                $("#saveProductBtn").show();  // Show Add button again
+                $("#updateProductBtn").hide();  // Hide Update button
+            }
+        });
+    });
+
+    // Delete product
+    $(document).on("click", ".deleteProduct", function () {
+        let productId = $(this).data("id");
+
+        if (confirm("Are you sure you want to delete this product?")) {
+            $.ajax({
+                url: `http://localhost:8080/api/v1/products/delete/${productId}`,
+                method: "DELETE",
+                headers: { "Authorization": "Bearer " + token },
+                success: function () {
+                    loadProducts();
+                }
+            });
+        }
+    });
+});
+
+fetch("http://localhost:8080/api/v1/categories/getAll")
+    .then(response => response.json())
+    .then(data => {
+        let categoryDropdown = document.querySelector("#categoryDropdown"); // Update with correct ID
+        categoryDropdown.innerHTML = ""; // Clear existing options
+
+        if (Array.isArray(data.data)) {
+            data.data.forEach(category => {
+                let option = document.createElement("option");
+                option.value = category.categoryId;
+                option.textContent = category.name;
+                categoryDropdown.appendChild(option);
+            });
+        } else {
+            console.error("Expected an array but got:", data);
+        }
+    })
+    .catch(error => console.error("Error fetching categories:", error));
