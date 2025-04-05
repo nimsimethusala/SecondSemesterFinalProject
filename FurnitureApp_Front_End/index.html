@@ -4,109 +4,1192 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Furniture Designer</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* Custom Styles */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #10002B;
-            color: white;
+        :root {
+            --purple: #640D5F;
+            --pink: #D91656;
+            --orange: #EB5B00;
+            --yellow: #FFB200;
+            --light-gray: #f8f9fa;
+            --transition: all 0.3s ease;
         }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .font-heading {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        /* Custom Navbar */
+        .navbar {
+            background-color: var(--purple);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-scrolled {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Hero Section */
         .hero-section {
-            background: url('images/comfortable-sofa-illuminated-by-modern-electric-lamps-generated-by-ai.jpg') no-repeat center center/cover;
             height: 100vh;
+            background: linear-gradient(rgba(100, 13, 95, 0.7), rgba(217, 22, 86, 0.6)), url('images/lamp-design-with-digital-art-style.jpg') no-repeat center center/cover;
+            position: relative;
+        }
+
+        .category-container {
+            padding: 80px 0;
+        }
+
+        .category-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .category-title h2 {
+            color: var(--purple);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .category-title p {
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .category-button {
+            background: white;
+            border: 2px solid var(--light-gray);
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .category-button.active {
+            background: var(--purple);
+            color: white;
+            border-color: var(--purple);
+        }
+
+        .category-content {
+            display: none;
+            opacity: 0;
+            transition: var(--transition);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .category-content.active {
+            display: flex;
+            flex-wrap: wrap;
+            opacity: 1;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-card {
+            flex: 1 1 300px;
+            margin: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: var(--transition);
+            background: white;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(106, 54, 229, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
+            opacity: 0;
+            transition: var(--transition);
         }
-        .hero-overlay {
-            background: rgba(36, 0, 70, 0.33);
-            position: absolute;
-            top: 25%;
-            left: 15%;
-            width: 70%;
-            height: 50%;
+
+        .product-card:hover .product-overlay {
+            opacity: 1;
         }
-        .hero-content {
-            text-align: center;
-            position: relative;
-            z-index: 2;
-            color: #E0AAFF;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        .btn-custom {
-            background-color: #D63384;
-            border: none;
+
+        .quick-view {
+            background: white;
+            color: var(--purple);
             padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            transform: translateY(20px);
+            transition: var(--transition);
+        }
+
+        .product-card:hover .quick-view {
+            transform: translateY(0);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            color: var(--pink);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .product-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .product-price {
+            color: var(--purple);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .product-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-button {
+            color: var(--orange);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .view-button:hover {
+            gap: 10px;
+        }
+
+        .icon-container {
+            width: 40px;
+            height: 40px;
+            background: var(--light-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .icon-container:hover {
+            background: var(--orange);
             color: white;
-            font-weight: bold;
-            border-radius: 5px;
         }
+
+        /* About Section Gradient */
+        .about-gradient {
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+        }
+
+        /* Service Cards */
+        .service-card {
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-bottom: 3px solid var(--yellow);
+        }
+
+        /* Custom Button */
+        .btn-custom {
+            background: linear-gradient(90deg, var(--pink), var(--orange));
+            border: none;
+            transition: all 0.3s ease;
+        }
+
         .btn-custom:hover {
-            background-color: #9D4EDD;
+            background: linear-gradient(90deg, var(--orange), var(--yellow));
+            transform: translateY(-2px);
         }
-        .navbar {
-            background-color: #240046 !important;
+
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 1s ease-in both;
         }
-        .navbar-brand {
-            font-weight: bold;
-            color: #E0AAFF !important;
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .nav-link {
-            color: white !important;
-            font-weight: 500;
+
+        /* Page transitions */
+        .page-section {
+            display: none;
         }
-        .nav-link:hover {
-            color: #C77DFF !important;
+
+        .active-section {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        /* Footer gradient */
+        .footer-gradient {
+            background: linear-gradient(to right, var(--purple), var(--pink));
+        }
+
+        /* Team member cards */
+        .team-card {
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Contact form */
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: var(--pink);
+            box-shadow: 0 0 0 0.25rem rgba(217, 22, 86, 0.25);
         }
     </style>
-</head>
-<body>
 
-<!-- Fixed Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+</head>
+<body class="bg-gray-100">
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg fixed-top py-3">
     <div class="container">
-        <a class="navbar-brand" href="#">Furniture</a>
+        <a class="navbar-brand text-white font-heading font-bold text-xl" href="#">
+            <i class="fas fa-couch mr-2"></i> FURNITURE
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Furniture</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contact Us</a></li>
+                <li class="nav-item">
+                    <a class="nav-link text-white mx-2 page-link" href="#" data-page="home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white mx-2 page-link" href="#" data-page="about">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white mx-2 page-link" href="#" data-page="contact">Contact Us</a>
+                </li>
+                <!--<li class="nav-item ms-3">
+                    <a class="btn btn-sm px-4 py-2 rounded-pill" style="background-color: var(&#45;&#45;yellow); color: var(&#45;&#45;purple);" href="#" id="signInBtn">Sign In</a>
+                </li>
+                <li class="nav-item ms-2">
+                    <a class="btn btn-sm px-4 py-2 rounded-pill" style="background-color: var(&#45;&#45;pink); color: white;" href="#" id="signUpBtn">Sign Up</a>
+                </li>-->
             </ul>
-            <!-- Display Username if Logged In -->
-<!--            <span id="userName" class="text-light ms-3 fw-bold"></span>-->
-            <a href="#" class="btn btn-outline-light ms-3" id="signInBtn">Sign In</a>
-            <a href="#" class="btn btn-danger ms-2" id="signUpBtn">Sign Up</a>
         </div>
     </div>
 </nav>
 
-<!-- Hero Section -->
-<div class="hero-section">
-    <div class="hero-overlay"></div>
-    <div class="hero-content text-center">
-        <h1 class="fw-bold">FURNITURE DESIGNER</h1>
-        <p class="lead">Discover modern and stylish furniture designs that enhance your living space with elegance and comfort.</p>
-        <a href="#" class="btn btn-custom me-2">Get Started</a>
-        <a href="#" class="btn btn-custom">Dashboard</a>
+<!-- Home Section -->
+<section id="home" class="page-section active-section">
+    <!-- Hero Section -->
+    <div class="hero-section d-flex align-items-center justify-content-center">
+        <div class="container text-center text-white">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="display-3 font-heading font-bold mb-4 fade-in">FURNITURE DESIGNER</h1>
+                    <p class="lead mb-5 fade-in">Transform your living spaces with our modern, stylish, and comfortable furniture designs.</p>
+                    <div class="mt-4 fade-in">
+                        <a href="#" class="btn btn-custom text-white px-4 py-3 rounded-pill me-3">Sign Up</a>
+                        <a href="#" class="btn btn-outline-light px-4 py-3 rounded-pill">Sign In</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
+    <!-- Featured Products -->
+    <div class="category-container">
+        <div class="category-title">
+            <h2 class="font-heading">Featured Designs</h2>
+            <p>Our most popular furniture pieces that define modern living</p>
+        </div>
+
+        <div class="category-nav">
+            <button class="category-button active" data-category="living-room"> Table </button>
+            <button class="category-button" data-category="bedroom"> Chair </button>
+            <button class="category-button" data-category="kitchen"> Wall Rack </button>
+            <button class="category-button" data-category="office"> Office </button>
+            <button class="category-button" data-category="outdoor"> Outdoor </button>
+        </div>
+
+        <!-- Living Room Content -->
+        <div id="living-room" class="category-content active">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Modern Sectional Sofa">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Modern Sectional Sofa</h4>
+                    <p class="product-description">Elegant and comfortable design perfect for modern living spaces.</p>
+                    <div class="product-price">$1,299.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Minimalist Coffee Table">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Minimalist Coffee Table</h4>
+                    <p class="product-description">Sleek design with walnut finish and tempered glass top.</p>
+                    <div class="product-price">$449.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Accent Lounge Chair">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Accent Lounge Chair</h4>
+                    <p class="product-description">Contemporary chair with plush cushions and solid wood legs.</p>
+                    <div class="product-price">$599.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bedroom Content -->
+        <div id="bedroom" class="category-content">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Queen Platform Bed">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Queen Platform Bed</h4>
+                    <p class="product-description">Mid-century inspired bed frame with walnut finish.</p>
+                    <div class="product-price">$849.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="6-Drawer Dresser">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">6-Drawer Dresser</h4>
+                    <p class="product-description">Spacious storage with smooth-gliding drawers and brass pulls.</p>
+                    <div class="product-price">$799.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Bedside Table Set">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Bedside Table Set</h4>
+                    <p class="product-description">Set of two matching nightstands with hidden charging ports.</p>
+                    <div class="product-price">$399.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kitchen Content -->
+        <div id="kitchen" class="category-content">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Extendable Dining Table">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Extendable Dining Table</h4>
+                    <p class="product-description">Solid oak table that extends to seat up to 10 people.</p>
+                    <div class="product-price">$1,199.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Upholstered Dining Chairs">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Upholstered Dining Chairs</h4>
+                    <p class="product-description">Set of four comfortable dining chairs with stain-resistant fabric.</p>
+                    <div class="product-price">$699.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Kitchen Island Cart">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Kitchen Island Cart</h4>
+                    <p class="product-description">Mobile kitchen island with marble top and storage drawers.</p>
+                    <div class="product-price">$549.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Office Content -->
+        <div id="office" class="category-content">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Adjustable Desk">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Adjustable Desk</h4>
+                    <p class="product-description">Height-adjustable desk with electric motors and memory presets.</p>
+                    <div class="product-price">$749.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Ergonomic Office Chair">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Ergonomic Office Chair</h4>
+                    <p class="product-description">Full-featured chair with lumbar support and adjustable armrests.</p>
+                    <div class="product-price">$399.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Bookcase with Cabinet">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Bookcase with Cabinet</h4>
+                    <p class="product-description">Tall bookshelf with closed storage at bottom for office supplies.</p>
+                    <div class="product-price">$529.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Outdoor Content -->
+        <div id="outdoor" class="category-content">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Patio Dining Set">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Patio Dining Set</h4>
+                    <p class="product-description">Weather-resistant table and six chairs for outdoor dining.</p>
+                    <div class="product-price">$1,299.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Lounge Chair Set">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Lounge Chair Set</h4>
+                    <p class="product-description">Set of two adjustable lounge chairs with side table.</p>
+                    <div class="product-price">$649.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="/api/placeholder/400/320" alt="Outdoor Sofa">
+                    <div class="product-overlay">
+                        <div class="quick-view">Quick View</div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <h4 class="product-name">Outdoor Sofa</h4>
+                    <p class="product-description">Water-resistant sofa with thick cushions and aluminum frame.</p>
+                    <div class="product-price">$899.00</div>
+                    <div class="product-action">
+                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
+                        <div class="icon-container">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--     Testimonials-->
+    <!--<div class="py-5 my-5" style="background-color: var(&#45;&#45;purple);">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="font-heading font-bold text-4xl mb-2 text-white">What Clients Say</h2>
+                <p class="text-gray-300">Hear from our satisfied customers</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow h-100 p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="flex-shrink-0">
+                                <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Client" class="rounded-circle" width="60">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="mb-0 font-heading font-medium" style="color: var(&#45;&#45;pink);">Sarah Johnson</h5>
+                                <p class="mb-0 text-gray-600">Interior Designer</p>
+                            </div>
+                        </div>
+                        <div class="mb-3" style="color: var(&#45;&#45;yellow);">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-gray-600">"The quality and design of these furniture pieces exceeded my expectations. My clients are always impressed with the statement pieces I source from here."</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow h-100 p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="flex-shrink-0">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client" class="rounded-circle" width="60">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="mb-0 font-heading font-medium" style="color: var(&#45;&#45;pink);">Michael Chen</h5>
+                                <p class="mb-0 text-gray-600">Homeowner</p>
+                            </div>
+                        </div>
+                        <div class="mb-3" style="color: var(&#45;&#45;yellow);">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-gray-600">"The custom sectional sofa we ordered fits perfectly in our living room. The ability to choose our own fabric and dimensions was exactly what we needed."</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow h-100 p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="flex-shrink-0">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client" class="rounded-circle" width="60">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="mb-0 font-heading font-medium" style="color: var(&#45;&#45;pink);">Amelia Taylor</h5>
+                                <p class="mb-0 text-gray-600">Office Manager</p>
+                            </div>
+                        </div>
+                        <div class="mb-3" style="color: var(&#45;&#45;yellow);">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-gray-600">"We furnished our entire office with these ergonomic and stylish pieces. The team was professional from design consultation to delivery."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+</section>
+
+<!-- About Us Section -->
+<section id="about" class="page-section pt-5 mt-5">
+    <div class="container pt-5">
+        <div class="text-center mb-5">
+            <h2 class="font-heading font-bold text-4xl mb-2" style="color: var(--purple);">About Us</h2>
+            <p class="text-gray-600">Our story, mission, and the team behind our designs</p>
+        </div>
+
+        <!-- Our Story -->
+        <div class="row align-items-center mb-5 pb-5">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Our Workshop" class="img-fluid rounded shadow">
+            </div>
+            <div class="col-lg-6">
+                <h3 class="font-heading font-semibold mb-4" style="color: var(--pink);">Our Story</h3>
+                <p class="text-gray-700 mb-4">Founded in 2010, our furniture design studio began with a passion for creating beautiful, functional pieces that enhance people's lives. What started as a small workshop has grown into a full-service design studio with a team of talented artisans and designers.</p>
+                <p class="text-gray-700 mb-4">We believe that great design should be accessible to everyone. Our mission is to create furniture that combines aesthetics, functionality, and sustainability without compromising on quality or style.</p>
+                <div class="d-flex flex-wrap">
+                    <div class="me-5 mb-3">
+                        <h4 class="font-heading font-semibold" style="color: var(--orange);">500+</h4>
+                        <p class="text-gray-600">Projects Completed</p>
+                    </div>
+                    <div class="me-5 mb-3">
+                        <h4 class="font-heading font-semibold" style="color: var(--orange);">15+</h4>
+                        <p class="text-gray-600">Years Experience</p>
+                    </div>
+                    <div class="mb-3">
+                        <h4 class="font-heading font-semibold" style="color: var(--orange);">25+</h4>
+                        <p class="text-gray-600">Design Awards</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Process -->
+        <div class="bg-white rounded-lg shadow-sm p-5 mb-5">
+            <div class="text-center mb-5">
+                <h3 class="font-heading font-semibold" style="color: var(--pink);">Our Design Process</h3>
+                <p class="text-gray-600">How we bring your furniture vision to life</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="text-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; background-color: var(--purple); color: white;">
+                            <i class="fas fa-comments fa-2x"></i>
+                        </div>
+                        <h5 class="font-heading font-medium" style="color: var(--pink);">Consultation</h5>
+                        <p class="text-gray-600 small">We discuss your needs, preferences, and space constraints.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="text-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; background-color: var(--pink); color: white;">
+                            <i class="fas fa-pencil-ruler fa-2x"></i>
+                        </div>
+                        <h5 class="font-heading font-medium" style="color: var(--pink);">Concept Design</h5>
+                        <p class="text-gray-600 small">Our designers create sketches and 3D models for your approval.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="text-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; background-color: var(--orange); color: white;">
+                            <i class="fas fa-hammer fa-2x"></i>
+                        </div>
+                        <h5 class="font-heading font-medium" style="color: var(--pink);">Craftsmanship</h5>
+                        <p class="text-gray-600 small">Our skilled artisans handcraft your piece with precision and care.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="text-center">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; background-color: var(--yellow); color: white;">
+                            <i class="fas fa-home fa-2x"></i>
+                        </div>
+                        <h5 class="font-heading font-medium" style="color: var(--pink);">Delivery</h5>
+                        <p class="text-gray-600 small">We deliver and install your furniture, ensuring perfect placement.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Team -->
+        <div class="mb-5">
+            <div class="text-center mb-5">
+                <h3 class="font-heading font-semibold" style="color: var(--pink);">Meet Our Team</h3>
+                <p class="text-gray-600">The talented individuals behind our designs</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 shadow-sm team-card h-100">
+                        <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Team Member" class="card-img-top">
+                        <div class="card-body text-center">
+                            <h5 class="card-title font-heading font-medium mb-1" style="color: var(--purple);">David Miller</h5>
+                            <p class="text-gray-600 mb-3">Founder & Lead Designer</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="#" class="text-decoration-none mx-2" style="color: var(--pink);"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="text-decoration-none mx-2" style="color: var(--pink);"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="text-decoration-none mx-2" style="color: var(--pink);"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 shadow-sm team-card h-100">
+                        <img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Team Member" class="card-img-top">
+                        <div class="card-body text-center">
+                            <h5 class="card-title font-heading font-medium mb-1" style="color: var(--purple);">Elena Rodriguez</h5>
+                            <p class="text-gray-600 mb-3">Senior Designer</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="#" class="text-decoration-none mx-2" style="color: var(--pink);"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="text-decoration-none mx-2" style="color: var(--pink);"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="text-decoration-none mx-2" style="color: var(--pink);"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 shadow-sm team-card h-100">
+                        <img src="https://randomuser.me/api/portraits/men/35.jpg" alt="Team Member" class="card-img-top">
+                        <div class="card-body text-center">
+                            <h5 class="card-title font-heading font-medium mb-1" style="color: var(--purple);">James Wilson</h5>
+                            <p class="text-gray-600 mb-3">Master Craftsman</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="#" class="text-decoration-none mx-2" style="color: var(--pink);"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="text-decoration-none mx-2" style="color: var(--pink);"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="text-decoration-none mx-2" style="color: var(--pink);"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="card border-0 shadow-sm team-card h-100">
+                        <img src="https://randomuser.me/api/portraits/women/22.jpg" alt="Team Member" class="card-img-top">
+                        <div class="card-body text-center">
+                            <h5 class="card-title font-heading font-medium mb-1" style="color: var(--purple);">Sophia Kim</h5>
+                            <p class="text-gray-600 mb-3">Material Specialist</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="#" class="text-decoration-none mx-2" style="color: var(--pink);"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="text-decoration-none mx-2" style="color: var(--pink);"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="text-decoration-none mx-2" style="color: var(--pink);"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Us Section -->
+<section id="contact" class="page-section pt-5 mt-5">
+    <div class="container pt-5">
+        <div class="text-center mb-5">
+            <h2 class="font-heading font-bold text-4xl mb-2" style="color: var(--purple);">Contact Us</h2>
+            <p class="text-gray-600">Get in touch with our team for inquiries or custom projects</p>
+        </div>
+
+        <div class="row g-5">
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <h4 class="font-heading font-semibold mb-4" style="color: var(--pink);">Get In Touch</h4>
+                    <p class="text-gray-700 mb-4">We'd love to hear from you! Whether you have a question about our designs, pricing, or custom options, our team is ready to answer all your questions.</p>
+
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; background-color: var(--purple); color: white;">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-heading font-medium mb-1" style="color: var(--pink);">Our Location</h5>
+                            <p class="text-gray-600 mb-0">123 Design Street, Creative City, 10001</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; background-color: var(--orange); color: white;">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-heading font-medium mb-1" style="color: var(--pink);">Call Us</h5>
+                            <p class="text-gray-600 mb-0">+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; background-color: var(--yellow); color: white;">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-heading font-medium mb-1" style="color: var(--pink);">Email Us</h5>
+                            <p class="text-gray-600 mb-0">info@furnituredesigner.com</p>
+                        </div>
+                    </div>
+
+                    <h5 class="font-heading font-medium mb-3" style="color: var(--pink);">Follow Us</h5>
+                    <div class="d-flex">
+                        <a href="#" class="rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px; background-color: var(--purple); color: white;">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px; background-color: var(--pink); color: white;">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px; background-color: var(--orange); color: white;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 40px; height: 40px; background-color: var(--yellow); color: white;">
+                            <i class="fab fa-pinterest-p"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm p-4">
+                    <h4 class="font-heading font-semibold mb-4" style="color: var(--pink);">Send us a Message</h4>
+                    <form class="contact-form">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label text-gray-700">Full Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Your Name">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label text-gray-700">Email Address</label>
+                                <input type="email" class="form-control" id="email" placeholder="your@email.com">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="subject" class="form-label text-gray-700">Subject</label>
+                            <input type="text" class="form-control" id="subject" placeholder="How can we help you?">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="message" class="form-label text-gray-700">Message</label>
+                            <textarea class="form-control" id="message" rows="5" placeholder="Your message here..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-custom text-white px-4 py-3 rounded-pill">
+                            <i class="fas fa-paper-plane me-2"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map -->
+        <div class="mt-5 p-3 bg-white rounded shadow-sm">
+            <div class="bg-light p-2 rounded" style="height: 400px;">
+                <!-- Replace with actual map or iframe -->
+                <div class="d-flex justify-content-center align-items-center h-100 bg-gray-200">
+                    <div class="text-center p-4">
+                        <i class="fas fa-map-marked-alt fa-3x mb-3" style="color: var(--purple);"></i>
+                        <h5 class="font-heading font-medium" style="color: var(--pink);">Our Location</h5>
+                        <p class="text-gray-600">123 Design Street, Creative City, 10001</p>
+                        <p class="small text-gray-500 mt-3">Map loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer-gradient text-white mt-5 pt-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-4 mb-4">
+                <h4 class="font-heading font-bold text-xl mb-4">FURNITURE DESIGNER</h4>
+                <p class="text-gray-200 mb-4">Creating beautiful spaces through thoughtful design and exceptional craftsmanship. We bring your furniture vision to life.</p>
+                <div class="d-flex mb-3">
+                    <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-pinterest-p"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="font-heading font-medium mb-4">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-gray-200 text-decoration-none">Home</a></li>
+                    <li class="mb-2"><a href="#" class="text-gray-200 text-decoration-none">About Us</a></li>
+                    <li class="mb-2"><a href="#" class="text-gray-200 text-decoration-none">Contact Us</a></li>
+                    <li class="mb-2"><a href="#" class="text-gray-200 text-decoration-none">Privacy Policy</a></li>
+                    <li class="mb-2"><a href="#" class="text-gray-200 text-decoration-none">Terms of Service</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h5 class="font-heading font-medium mb-4">Collections</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-gray-200 text-decoration-none">Living Room</a></li>
+                    <li class="mb-2"><a href="#" class="text-gray-200 text-decoration-none">Bedroom</a></li>
+                    <li class="mb-2"><a href="#" class="text-gray-200 text-decoration-none">Dining Room</a></li>
+                    <li class="mb-2"><a href="#" class="text-gray-200 text-decoration-none">Office</a></li>
+                    <li class="mb-2"><a href="#" class="text-gray-200 text-decoration-none">Outdoor</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 mb-4">
+                <h5 class="font-heading font-medium mb-4">Newsletter</h5>
+                <p class="text-gray-200 mb-3">Subscribe to receive updates on new collections and design tips.</p>
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Your email" aria-label="Email" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-light" type="button" id="button-addon2">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-black py-3">
+        <div class="container text-center">
+            <p class="small text-gray-400 mb-0">© 2025 Furniture Designer. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Simulating a logged-in user (replace this with actual authentication logic)
-    const loggedInUser = "John Doe"; // Example username
+    // Page Navigation
+    document.addEventListener('DOMContentLoaded', function() {
+        const pageLinks = document.querySelectorAll('.page-link');
+        const pageSections = document.querySelectorAll('.page-section');
+        const categoryButtons = document.querySelectorAll('.category-button');
+        const categoryContents = document.querySelectorAll('.category-content');
 
-    if (loggedInUser) {
-        document.getElementById("userName").textContent = `Welcome, ${loggedInUser}`;
-        document.getElementById("signInBtn").style.display = "none";
-        document.getElementById("signUpBtn").style.display = "none";
-    }
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons and contents
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                categoryContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked button
+                this.classList.add('active');
+
+                // Get the category to show
+                const category = this.getAttribute('data-category');
+
+                // Show the corresponding content with animation
+                document.getElementById(category).classList.add('active');
+            });
+        });
+
+        // Handle page navigation
+        pageLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Get the target page
+                const targetPage = this.getAttribute('data-page');
+
+                // Hide all sections
+                pageSections.forEach(section => {
+                    section.classList.remove('active-section');
+                });
+
+                // Show the target section
+                document.getElementById(targetPage).classList.add('active-section');
+
+                // Close mobile nav if open
+                const navbarCollapse = document.getElementById('navbarNav');
+                if (navbarCollapse.classList.contains('show')) {
+                    const bsCollapse = new bootstrap.Collapse(navbarCollapse);
+                    bsCollapse.hide();
+                }
+
+                // Scroll to top
+                window.scrollTo(0, 0);
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+
+        // Simulating a logged-in user (replace with actual authentication logic)
+        const loggedInUser = null; // Set to a username when logged in
+
+        if (loggedInUser) {
+            document.getElementById("signInBtn").style.display = "none";
+            document.getElementById("signUpBtn").style.display = "none";
+            // Add user welcome or profile link here
+        }
+
+        // Initialize the active page based on URL hash if present
+        const hash = window.location.hash.substring(1);
+        if (hash && document.getElementById(hash)) {
+            pageSections.forEach(section => {
+                section.classList.remove('active-section');
+            });
+            document.getElementById(hash).classList.add('active-section');
+        }
+    });
 </script>
 </body>
 </html>

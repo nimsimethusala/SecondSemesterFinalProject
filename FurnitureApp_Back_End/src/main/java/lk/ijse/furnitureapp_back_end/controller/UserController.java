@@ -28,6 +28,7 @@ public class UserController {
     @PostMapping(value = "/register")
     public ResponseEntity<ResponseDTO> registerUser(@RequestBody @Valid UserDTO userDTO) {
         try {
+            System.out.println("User Entity = "+userDTO.toString());
             int res = userService.saveUser(userDTO);
             switch (res) {
                 case VarList.Created -> {
@@ -47,47 +48,6 @@ public class UserController {
                             .body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
                 }
             }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
-        }
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<ResponseDTO> updateUser(@RequestBody @Valid UserDTO userDTO) {
-        try {
-            int res = userService.updateUser(userDTO);
-            return switch (res) {
-                case VarList.OK -> ResponseEntity.ok(new ResponseDTO(VarList.OK, "User Updated Successfully", userDTO));
-                case VarList.Not_Found -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(VarList.Not_Found, "User Not Found", null));
-                default -> ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
-            };
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
-        }
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ResponseDTO> deleteUser(@PathVariable String id) {
-        try {
-            int res = userService.deleteUser(id);
-            return switch (res) {
-                case VarList.OK -> ResponseEntity.ok(new ResponseDTO(VarList.OK, "User Deleted Successfully", null));
-                case VarList.Not_Found -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(VarList.Not_Found, "User Not Found", null));
-                default -> ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
-            };
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
-        }
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<ResponseDTO> getAllUsers() {
-        try {
-            List<UserDTO> users = userService.getAllUsers();
-            return ResponseEntity.ok(new ResponseDTO(VarList.OK, "User List Retrieved", users));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));

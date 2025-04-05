@@ -8,6 +8,7 @@ import lk.ijse.furnitureapp_back_end.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -62,4 +63,14 @@ public class CategoryServiceImpl implements CategoryService {
         return VarList.Not_Found; // Return 404 if category doesn't exist
     }
 
+    public List<String> getAllCategoryNames() {
+        List<Category> categories = categoryRepository.findAll();
+        List<String> names = new ArrayList<>();
+
+        for (Category category : categories) {
+            names.add(category.getName());
+        }
+
+        return names;
+    }
 }

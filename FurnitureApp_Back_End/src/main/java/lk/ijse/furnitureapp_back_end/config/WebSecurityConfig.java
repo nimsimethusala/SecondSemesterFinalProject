@@ -36,6 +36,7 @@ public class WebSecurityConfig {
     private UserServiceImpl userService;
     @Autowired
     private JwtFilter jwtFilter;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -44,11 +45,13 @@ public class WebSecurityConfig {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -60,21 +63,23 @@ public class WebSecurityConfig {
                                 "/api/v1/auth/refreshToken",
                                 "/v3/api-docs/**",
                                 "/api/v1/users/all",
+                                "/api/v1/adminuser/all",
                                 "/api/v1/categories/getAll",
                                 "/api/v1/products/getAll",
                                 "/swagger-ui/**",
+                                "/images/**",
                                 "/swagger-ui.html").permitAll()
 
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors(Customizer.withDefaults())//$60+$60
+                .cors(Customizer.withDefaults())
                 .build();
     }
 
     @Bean
-    public CorsFilter corsFilter(){
+    public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configure = new CorsConfiguration();
         configure.setAllowCredentials(true);

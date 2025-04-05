@@ -6,7 +6,7 @@ $(document).ready(function () {
         $.ajax({
             url: "http://localhost:8080/api/v1/products/getAll",
             method: "GET",
-            headers: { "Authorization": "Bearer " + token },
+            headers: {"Authorization": "Bearer " + token},
             success: function (response) {
                 let tableBody = $("#productTable");
                 tableBody.empty();
@@ -17,6 +17,7 @@ $(document).ready(function () {
                             <td>${product.name}</td>
                             <td>${product.category}</td>
                             <td>${product.price}</td>
+<!--                            <td><img src="http://localhost:8080/images/"+${product.imageUrl}</td>-->
                             <td>
                                 <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#productModal" id="updateProductBtn" data-id="${product.productId}"><i class="fas fa-edit"></i></button>
                                 <button class="deleteProduct btn btn-sm btn-danger" data-id="${product.productId}"><i class="fas fa-trash"></i></button>
@@ -34,17 +35,16 @@ $(document).ready(function () {
     // Add new product
     $("#saveProductBtn").click(function (e) {
         e.preventDefault();
-        let productData = {
-            name: $("#productName").val(),
-            category: $("#productCategory").val(),
-            price: $("#productPrice").val(),
-            description: $("#productDescription").val(),
-            image: $("#productImage")[0].files[0] // Image file
-        };
 
         let formData = new FormData();
-        for (const key in productData) {
-            formData.append(key, productData[key]);
+        formData.append("name", $("#productName").val());
+        formData.append("categoryName", $("#categoryDropdown").val());
+        formData.append("price", $("#productPrice").val());
+        formData.append("description", $("#productDescription").val());
+
+        let imageFile = $("#productImage")[0].files[0];
+        if (imageFile) {
+            formData.append("image", imageFile);
         }
 
         $.ajax({
@@ -52,7 +52,7 @@ $(document).ready(function () {
             method: "POST",
             contentType: false,
             processData: false,
-            headers: { "Authorization": "Bearer " + token },
+            headers: {"Authorization": "Bearer " + token},
             data: formData,
             success: function () {
                 loadProducts();
@@ -62,7 +62,7 @@ $(document).ready(function () {
         });
     });
 
-    // Update existing product
+    /*// Update existing product
     $(document).on("click", "#updateProductBtn", function () {
         let productId = $(this).data("id");
 
@@ -84,23 +84,20 @@ $(document).ready(function () {
                 $("#updateProductBtn").data("id", productId);  // Store product ID for update
             }
         });
-    });
+    });*/
 
-    // Update the product via PUT
     $("#updateProductBtn").click(function () {
         let productId = $(this).data("id");
 
-        let productData = {
-            name: $("#productName").val(),
-            category: $("#productCategory").val(),
-            price: $("#productPrice").val(),
-            description: $("#productDescription").val(),
-            image: $("#productImage")[0].files[0]
-        };
-
         let formData = new FormData();
-        for (const key in productData) {
-            formData.append(key, productData[key]);
+        formData.append("name", $("#productName").val());
+        formData.append("categoryName", $("#productCategory").val()); // Use categoryName
+        formData.append("price", $("#productPrice").val());
+        formData.append("description", $("#productDescription").val());
+
+        let imageFile = $("#productImage")[0].files[0];
+        if (imageFile) {
+            formData.append("image", imageFile);
         }
 
         $.ajax({
@@ -108,14 +105,14 @@ $(document).ready(function () {
             method: "PUT",
             contentType: false,
             processData: false,
-            headers: { "Authorization": "Bearer " + token },
+            headers: {"Authorization": "Bearer " + token},
             data: formData,
             success: function () {
                 loadProducts();
-                $("#productModal").modal("hide");  // Close modal after saving
-                $("#productForm")[0].reset();  // Reset form
-                $("#saveProductBtn").show();  // Show Add button again
-                $("#updateProductBtn").hide();  // Hide Update button
+                $("#productModal").modal("hide");
+                $("#productForm")[0].reset();
+                $("#saveProductBtn").show();
+                $("#updateProductBtn").hide();
             }
         });
     });
@@ -128,30 +125,34 @@ $(document).ready(function () {
             $.ajax({
                 url: `http://localhost:8080/api/v1/products/delete/${productId}`,
                 method: "DELETE",
-                headers: { "Authorization": "Bearer " + token },
+                headers: {"Authorization": "Bearer " + token},
                 success: function () {
+                    alert("Product deleted successfully!");
                     loadProducts();
+                },
+                error: function (xhr) {
+                    alert("Error deleting product: " + xhr.responseJSON.message);
                 }
             });
         }
     });
+
+    fetch("http://localhost:8080/api/v1/categories/getAll")
+        .then(response => response.json())
+        .then(data => {
+            let categoryDropdown = document.querySelector("#categoryDropdown"); // Update with correct ID
+            categoryDropdown.innerHTML = ""; // Clear existing options
+
+            if (Array.isArray(data.data)) {
+                data.data.forEach(category => {
+                    let option = document.createElement("option");
+                    // option.value = category.categoryId;
+                    option.textContent = category.name;
+                    categoryDropdown.appendChild(option);
+                });
+            } else {
+                console.error("Expected an array but got:", data);
+            }
+        })
+        .catch(error => console.error("Error fetching categories:", error));
 });
-
-fetch("http://localhost:8080/api/v1/categories/getAll")
-    .then(response => response.json())
-    .then(data => {
-        let categoryDropdown = document.querySelector("#categoryDropdown"); // Update with correct ID
-        categoryDropdown.innerHTML = ""; // Clear existing options
-
-        if (Array.isArray(data.data)) {
-            data.data.forEach(category => {
-                let option = document.createElement("option");
-                option.value = category.categoryId;
-                option.textContent = category.name;
-                categoryDropdown.appendChild(option);
-            });
-        } else {
-            console.error("Expected an array but got:", data);
-        }
-    })
-    .catch(error => console.error("Error fetching categories:", error));

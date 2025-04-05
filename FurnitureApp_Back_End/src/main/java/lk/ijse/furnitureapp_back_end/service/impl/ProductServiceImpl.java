@@ -1,26 +1,37 @@
 package lk.ijse.furnitureapp_back_end.service.impl;
 
 import lk.ijse.furnitureapp_back_end.dto.ProductDto;
+import lk.ijse.furnitureapp_back_end.entity.Category;
 import lk.ijse.furnitureapp_back_end.entity.Product;
+import lk.ijse.furnitureapp_back_end.repo.CategoryRepository;
 import lk.ijse.furnitureapp_back_end.repo.ProductRepository;
 import lk.ijse.furnitureapp_back_end.service.ProductService;
 import lk.ijse.furnitureapp_back_end.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
+    private ImageUploadService imageUploadService;
+
+    @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public List<ProductDto> getAllProducts() {
         List<Product> productList = productRepository.findAll();
+        System.out.println("Product List = " + productList);
 
         return productList.stream().map(product ->
                 new ProductDto(
@@ -33,19 +44,41 @@ public class ProductServiceImpl implements ProductService {
         ).collect(Collectors.toList());
     }
 
-    @Override
-    public int saveProduct(ProductDto product) {
+    public int saveProduct(ProductDto product) throws IOException {
         if (productRepository.existsByName(product.getName())) {
             return VarList.Not_Acceptable;
         } else {
-            // Assuming Product has a Category reference and the Category is already validated.
+            String uploadDir = "uploads/";
+            String fileUrl = null;
+
+            MultipartFile[] files = product.getImageFiles();
+
+
+            if (files != null && files.length > 0) { // Check if files exist
+                StringBuilder filePaths = new StringBuilder();
+                for (MultipartFile file : files) {
+
+                    String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+                    String savedPath = imageUploadService.saveFile(uploadDir, fileName, file);
+                    filePaths.append(savedPath).append(",");
+                }
+
+
+                fileUrl = filePaths.length() > 0 ? filePaths.substring(0, filePaths.length() - 1) : null;
+            }
+
+            // Get Category by Name (Ensure category exists)
+            Category category = categoryRepository.findByName(product.getCategoryName())
+                    .orElseThrow(() -> new RuntimeException("Category not found: " + product.getCategoryName()));
+
             Product newProduct = new Product(
                     product.getName(),
-                    product.getCategory(),
+                    category,
                     product.getPrice(),
                     product.getDescription(),
-                    product.getImageUrl()
+                    fileUrl
             );
+
             productRepository.save(newProduct);
             return VarList.Created;
         }
@@ -53,9 +86,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public int deleteProduct(String productId) {
-        Optional<Product> productOptional = productRepository.findById(productId);
+        Optional<Product> productOptional = productRepository.findById(UUID.fromString(productId));
         if (productOptional.isPresent()) {
-            productRepository.deleteById(productId);
+            productRepository.deleteById(UUID.fromString(productId));
             return VarList.OK;
         }
         return VarList.Not_Found;
@@ -63,7 +96,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public int updateProduct(String productId, ProductDto product) {
-        Optional<Product> productOptional = productRepository.findById(productId);
+        Optional<Product> productOptional = productRepository.findById(UUID.fromString(productId));
 
         if (productOptional.isPresent()) {
             Product existingProduct = productOptional.get();

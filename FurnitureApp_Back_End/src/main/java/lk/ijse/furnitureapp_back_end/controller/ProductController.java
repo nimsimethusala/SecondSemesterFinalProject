@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,9 +39,29 @@ public class ProductController {
 
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ResponseDTO> save(@Valid @RequestBody ProductDto product) {
+    public ResponseEntity<ResponseDTO> save(
+            @RequestParam("name") String name,
+            @RequestParam("categoryName") String categoryName,
+            @RequestParam("price") double price,
+            @RequestParam("description") String description,
+            @RequestParam(value = "image", required = false) MultipartFile imageFile) {
         try {
+            // Create DTO object
+            ProductDto product = new ProductDto();
+            product.setName(name);
+            product.setCategoryName(categoryName);
+            product.setPrice(price);
+            product.setDescription(description);
+
+            if (imageFile != null && !imageFile.isEmpty()) {
+                product.setImageFiles(new MultipartFile[]{imageFile});
+            }
+
+//            System.out.println(product.getImageFiles());
+//            System.out.println(Arrays.toString(product.getImageFiles()));
+
             int res = productService.saveProduct(product);
+
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ResponseDTO(VarList.Created, "Product Saved Successfully", res));
         } catch (Exception e) {

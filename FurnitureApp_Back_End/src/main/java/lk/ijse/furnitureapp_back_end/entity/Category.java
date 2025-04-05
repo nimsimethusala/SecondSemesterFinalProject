@@ -1,9 +1,7 @@
 package lk.ijse.furnitureapp_back_end.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +10,9 @@ import java.util.UUID;
 @Table(name = "category")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+//@Data
+@Getter
+@Setter
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -21,7 +21,7 @@ public class Category {
     private String name;
     private String status;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Product> products;
 
     public Category(String name, String status) {

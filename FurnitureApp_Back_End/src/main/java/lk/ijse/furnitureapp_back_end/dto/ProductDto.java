@@ -4,6 +4,7 @@ import lk.ijse.furnitureapp_back_end.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ public class ProductDto {
     private String imageUrl;
     private String categoryName;
     private Category category;
+    MultipartFile[] imageFiles;
 
     public ProductDto(UUID productId, String name, String categoryName, double price, String description, String imageUrl) {
         this.productId = productId;

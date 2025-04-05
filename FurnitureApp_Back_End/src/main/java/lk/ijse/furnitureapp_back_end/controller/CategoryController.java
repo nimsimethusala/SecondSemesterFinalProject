@@ -3,6 +3,7 @@ package lk.ijse.furnitureapp_back_end.controller;
 import jakarta.validation.Valid;
 import lk.ijse.furnitureapp_back_end.dto.CategoryDto;
 import lk.ijse.furnitureapp_back_end.dto.ResponseDTO;
+import lk.ijse.furnitureapp_back_end.entity.Category;
 import lk.ijse.furnitureapp_back_end.service.CategoryService;
 import lk.ijse.furnitureapp_back_end.util.VarList;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -77,5 +79,10 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
         }
+    }
+
+    @GetMapping("/names")
+    public List<String> getCategoryNames() {
+        return categoryService.getAllCategoryNames();
     }
 }
