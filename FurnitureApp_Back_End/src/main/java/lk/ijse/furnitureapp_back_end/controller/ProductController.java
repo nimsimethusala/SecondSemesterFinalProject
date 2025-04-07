@@ -3,6 +3,7 @@ package lk.ijse.furnitureapp_back_end.controller;
 import jakarta.validation.Valid;
 import lk.ijse.furnitureapp_back_end.dto.ProductDto;
 import lk.ijse.furnitureapp_back_end.dto.ResponseDTO;
+import lk.ijse.furnitureapp_back_end.entity.Product;
 import lk.ijse.furnitureapp_back_end.service.ProductService;
 import lk.ijse.furnitureapp_back_end.util.VarList;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -95,5 +97,10 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
         }
+    }
+
+    @GetMapping("/latest-per-category")
+    public ResponseEntity<Map<String, List<ProductDto>>> getLatestProductsByCategory() {
+        return ResponseEntity.ok(productService.getLatestThreeProductsPerCategory());
     }
 }

@@ -59,13 +59,15 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/v1/auth/authenticate",
-                                "/api/v1/user/register",
+                                "/api/v1/users/register",
                                 "/api/v1/auth/refreshToken",
                                 "/v3/api-docs/**",
                                 "/api/v1/users/all",
                                 "/api/v1/adminuser/all",
                                 "/api/v1/categories/getAll",
+                                "/api/v1/categories/names",
                                 "/api/v1/products/getAll",
+                                "api/v1/products/latest-per-category",
                                 "/swagger-ui/**",
                                 "/images/**",
                                 "/swagger-ui.html").permitAll()

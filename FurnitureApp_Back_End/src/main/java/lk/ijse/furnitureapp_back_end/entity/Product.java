@@ -3,6 +3,7 @@ package lk.ijse.furnitureapp_back_end.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,6 +26,10 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    @ManyToMany
+    @JoinTable(name = "product_material", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "material_id"))
+    private List<Material> materials;
 
     // Constructor excluding productId since it will be auto-generated
     public Product(String name, Category category, double price, String description, String imageUrl) {

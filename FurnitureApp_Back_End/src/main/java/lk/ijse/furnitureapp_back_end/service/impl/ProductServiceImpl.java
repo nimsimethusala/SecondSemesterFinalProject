@@ -112,4 +112,28 @@ public class ProductServiceImpl implements ProductService {
 
         return VarList.Not_Found; // Return 404 if product doesn't exist
     }
+
+    public Map<String, List<ProductDto>> getLatestThreeProductsPerCategory() {
+        List<Category> categories = categoryRepository.findAll();
+        Map<String, List<ProductDto>> latestProductDtos = new LinkedHashMap<>();
+
+        for (Category category : categories) {
+            List<Product> products = productRepository.findLastThreeByCategory(category.getCategoryId());
+
+            List<ProductDto> productDtos = products.stream()
+                    .map(product -> new ProductDto(
+                            product.getProductId(),
+                            product.getName(),
+                            category.getName(), // or product.getCategory().getName()
+                            product.getPrice(),
+                            product.getDescription(),
+                            product.getImageUrl()
+                    ))
+                    .toList();
+
+            latestProductDtos.put(category.getName(), productDtos);
+        }
+
+        return latestProductDtos;
+    }
 }

@@ -27,7 +27,32 @@ $(document).ready(function () {
         });
     }
 
+    function loadCategoryButtons() {
+        $.ajax({
+            url: "http://localhost:8080/api/v1/categories/names",
+            method: "GET",
+            success: function (categoryNames) {
+                const categoryNav = $("#categoryNav");
+                categoryNav.empty();
+                $.each(categoryNames, function (index, name) {
+                    const button = $("<button></button>")
+                        .addClass("category-button")
+                        .attr("data-category", name.toLowerCase().replace(/\s+/g, '-'))
+                        .text(name);
+                    if (index === 0) {
+                        button.addClass("active");
+                    }
+                    categoryNav.append(button);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Failed to load category names:", error);
+            }
+        });
+    }
+
     loadCategories();
+    loadCategoryButtons();
 
     $("#addCategoryForm").on("click", function (e) {
         e.preventDefault();

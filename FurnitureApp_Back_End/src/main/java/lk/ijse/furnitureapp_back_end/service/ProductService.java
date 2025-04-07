@@ -5,6 +5,7 @@ import lk.ijse.furnitureapp_back_end.dto.ProductDto;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
     List<ProductDto> getAllProducts();
@@ -14,4 +15,6 @@ public interface ProductService {
     int deleteProduct(String productId);
 
     int updateProduct(String productId, @Valid ProductDto product);
+
+    Map<String, List<ProductDto>> getLatestThreeProductsPerCategory();
 }
