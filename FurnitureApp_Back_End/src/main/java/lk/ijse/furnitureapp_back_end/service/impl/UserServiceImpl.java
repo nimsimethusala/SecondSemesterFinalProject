@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         } else {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+            System.out.println(userDTO.getRole());
             if (userDTO.getRole().equals("admin") || userDTO.getRole().equals("ADMIN") || userDTO.getRole().equals("Admin")) {
                 userDTO.setRole("ADMIN");
             }

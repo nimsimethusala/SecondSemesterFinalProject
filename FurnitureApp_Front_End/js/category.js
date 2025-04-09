@@ -1,6 +1,5 @@
 $(document).ready(function () {
     let token = localStorage.getItem("token");
-    console.log(token)
 
     function loadCategories() {
         $.ajax({
@@ -51,8 +50,49 @@ $(document).ready(function () {
         });
     }
 
+    function loadProductsByCategory() {
+        const params = new URLSearchParams(window.location.search);
+        const categoryName = params.get("name");
+
+        if (!categoryName) {
+            $("#category-title").text("Invalid Category");
+            return;
+        }
+
+        $("#category-title").text(`Category: ${categoryName}`);
+
+        $.ajax({
+            url: `http://localhost:8080/api/v1/products/category/${encodeURIComponent(categoryName)}`,
+            method: "GET",
+            success: function (response) {
+                const container = $("#category-products");
+                container.empty();
+
+                response.data.forEach(product => {
+                    container.append(`
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 shadow-sm">
+                            <img src="http://localhost:8080/images/${product.imageUrl}" class="card-img-top" alt="${product.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${product.name}</h5>
+                                <p class="card-text">${product.description}</p>
+                                <p class="card-text"><strong>Rs. ${product.price}</strong></p>
+                                <a href="/product/${product.id}" class="btn btn-outline-primary mt-2">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                });
+            },
+            error: function () {
+                $("#category-products").html("<p>Failed to load products.</p>");
+            }
+        });
+    }
+
     loadCategories();
     loadCategoryButtons();
+    loadProductsByCategory();
 
     $("#addCategoryForm").on("click", function (e) {
         e.preventDefault();

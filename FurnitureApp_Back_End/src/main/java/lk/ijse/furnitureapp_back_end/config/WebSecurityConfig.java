@@ -67,6 +67,7 @@ public class WebSecurityConfig {
                                 "/api/v1/categories/getAll",
                                 "/api/v1/categories/names",
                                 "/api/v1/products/getAll",
+                                "/api/v1/products/category/**",
                                 "api/v1/products/latest-per-category",
                                 "/swagger-ui/**",
                                 "/images/**",

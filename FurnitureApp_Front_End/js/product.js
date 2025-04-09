@@ -29,12 +29,32 @@ $(document).ready(function () {
         });
     }
 
+    function loadCategories() {
+        $.ajax({
+            url: "http://localhost:8080/api/v1/categories/getAll", // Replace with your actual endpoint
+            method: "GET",
+            success: function (response) {
+                const dropdown = $("#categoryDropdown");
+                dropdown.empty(); // Clear previous options
+                dropdown.append(`<option value="" disabled selected>Select a category</option>`);
+                $.each(response.data, function (index, category) {
+                    dropdown.append(`<option value="${category.name}">${category.name}</option>`);
+                });
+            },
+            error: function () {
+                console.error("Failed to load categories.");
+            }
+        });
+    }
+
+    loadCategories();
+
     function loadLatestProducts() {
         $.ajax({
             url: "http://localhost:8080/api/v1/products/latest-per-category",
             method: "GET",
             success: function (response) {
-                console.log(response)
+                console.log(response);
                 const contentContainer = $("#categoryContent");
                 const navContainer = $("#categoryNav");
                 contentContainer.empty();
@@ -45,61 +65,62 @@ $(document).ready(function () {
                 $.each(response, function (categoryName, products) {
                     let sectionId = categoryName.toLowerCase().replace(/\s+/g, '-');
 
-                    // Add category button
+                    // Add category nav button
                     navContainer.append(`
                     <button class="category-button ${isFirst ? 'active' : ''}" data-category="${sectionId}">
                         ${categoryName}
                     </button>
                 `);
 
-                    // Create category content section
+                    // Create section for category products
                     let section = $(`
                     <div class="category-content ${isFirst ? 'active' : ''}" id="${sectionId}">
-<!--                        <h3 class="mb-3">${categoryName}</h3>-->
                         <div class="products row"></div>
                     </div>
                 `);
 
+                    // Add latest products to section
                     products.forEach(product => {
                         section.find(".products").append(`
-                            <div class="col-md-4 mb-3">
-                                <div class="card h-100 shadow-sm">
-                                    <img src="http://localhost:8080/images/${product.imageUrl}" class="card-img-top" alt="${product.name}">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${product.name}</h5>
-                                        <p class="card-text">${product.description}</p>
-                                        <p class="card-text"><strong>Rs. ${product.price}</strong></p>
-                                        <a href="/product/${product.id}" class="btn btn-outline-primary mt-2">View Details</a>
-                                    </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 shadow-sm">
+                                <img src="http://localhost:8080/images/${product.imageUrl}" class="card-img-top" alt="${product.name}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${product.name}</h5>
+                                    <p class="card-text">${product.description}</p>
+                                    <p class="card-text"><strong>Rs. ${product.price}</strong></p>
+                                    <a href="/product/${product.id}" class="btn btn-outline-primary mt-2">View Details</a>
                                 </div>
                             </div>
-                        `);
-                    });
-
-                    section.append(`
-                        <div class="text-end mt-3">
-                            <a href="/category/${sectionId}" class="btn btn-primary">See More</a>
                         </div>
                     `);
+                    });
+
+                    // Add "See More" button (navigate to category.html)
+                    section.append(`
+                    <div class="text-end mt-3">
+                        <button class="btn btn-primary see-more-btn" data-category-name="${categoryName}">See More</button>
+                    </div>
+                `);
 
                     contentContainer.append(section);
                     isFirst = false;
                 });
 
-                // Handle category button clicks
+                // Category nav click handler
                 $(".category-button").on("click", function () {
                     const selectedCategory = $(this).data("category");
-
-                    // Update button active state
                     $(".category-button").removeClass("active");
                     $(this).addClass("active");
-
-                    // Show selected category section
                     $(".category-content").removeClass("active");
                     $(`#${selectedCategory}`).addClass("active");
+                });
 
-                    /*// Navigate to the category-specific page
-                    window.location.href = `/category/${selectedCategory}`;*/
+                // Redirect to category.html with category name on "See More"
+                $(document).on("click", ".see-more-btn", function () {
+                    const categoryName = $(this).data("category-name");
+                    const encodedName = encodeURIComponent(categoryName);
+                    window.location.href = `category.html?name=${encodedName}`;
                 });
             },
             error: function () {

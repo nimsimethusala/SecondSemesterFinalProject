@@ -1,3 +1,4 @@
+/*
 package lk.ijse.furnitureapp_back_end.entity;
 
 import jakarta.persistence.*;
@@ -25,3 +26,4 @@ public class Material {
     @ManyToMany(mappedBy = "materials")
     private List<Product> products;
 }
+*/

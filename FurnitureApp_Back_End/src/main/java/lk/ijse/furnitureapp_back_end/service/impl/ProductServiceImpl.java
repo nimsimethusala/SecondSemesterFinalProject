@@ -136,4 +136,23 @@ public class ProductServiceImpl implements ProductService {
 
         return latestProductDtos;
     }
+
+    @Override
+    public List<ProductDto> getProductsByCategoryName(String categoryName) {
+        List<Product> products = productRepository.findByCategory_NameIgnoreCase(categoryName);
+
+        List<ProductDto> dtos = new ArrayList<>();
+        for (Product product : products) {
+            ProductDto dto = new ProductDto();
+            dto.setProductId(product.getProductId());
+            dto.setName(product.getName());
+            dto.setPrice(product.getPrice());
+            dto.setDescription(product.getDescription());
+            dto.setCategoryName(product.getCategory().getName()); // Assuming it's always not null
+            dto.setImageUrl(product.getImageUrl()); // use setImageUrl instead of setImagePaths
+
+            dtos.add(dto);
+        }
+        return dtos;
+    }
 }

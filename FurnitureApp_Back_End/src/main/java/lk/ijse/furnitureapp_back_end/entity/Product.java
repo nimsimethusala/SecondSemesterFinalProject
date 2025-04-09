@@ -27,9 +27,9 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(name = "product_material", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "material_id"))
-    private List<Material> materials;
+    private List<Material> materials;*/
 
     // Constructor excluding productId since it will be auto-generated
     public Product(String name, Category category, double price, String description, String imageUrl) {

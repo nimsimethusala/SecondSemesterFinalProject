@@ -14,4 +14,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     @Query(value = "SELECT * FROM product WHERE category_id = :categoryId ORDER BY product_id DESC LIMIT 3", nativeQuery = true)
     List<Product> findLastThreeByCategory(@Param("categoryId") UUID categoryId);
+
+    List<Product> findByCategory_NameIgnoreCase(String name);
+
 }

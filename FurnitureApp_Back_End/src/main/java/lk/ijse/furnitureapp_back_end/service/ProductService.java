@@ -17,4 +17,6 @@ public interface ProductService {
     int updateProduct(String productId, @Valid ProductDto product);
 
     Map<String, List<ProductDto>> getLatestThreeProductsPerCategory();
+
+    List<ProductDto> getProductsByCategoryName(String categoryName);
 }

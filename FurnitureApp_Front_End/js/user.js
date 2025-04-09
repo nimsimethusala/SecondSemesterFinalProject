@@ -34,6 +34,8 @@ $(document).ready(function () {
 
     $("#addUserForm").on("click",function (event) {
         event.preventDefault();
+        let role = $("#role").val()
+        console.log(role)
         let userData = {
             name: $("#name").val(),
             email: $("#email").val(),

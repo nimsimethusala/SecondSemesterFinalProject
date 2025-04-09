@@ -103,4 +103,16 @@ public class ProductController {
     public ResponseEntity<Map<String, List<ProductDto>>> getLatestProductsByCategory() {
         return ResponseEntity.ok(productService.getLatestThreeProductsPerCategory());
     }
+
+    @GetMapping("/category/{categoryName}")
+    public ResponseEntity<ResponseDTO> getProductsByCategory(@PathVariable String categoryName) {
+        try {
+            List<ProductDto> products = productService.getProductsByCategoryName(categoryName);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseDTO(VarList.OK, "Products Retrieved Successfully", products));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
+        }
+    }
 }

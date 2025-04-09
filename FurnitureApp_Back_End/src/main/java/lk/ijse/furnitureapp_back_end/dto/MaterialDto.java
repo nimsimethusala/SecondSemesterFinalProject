@@ -1,3 +1,4 @@
+/*
 package lk.ijse.furnitureapp_back_end.dto;
 
 import lombok.AllArgsConstructor;
@@ -16,3 +17,4 @@ public class MaterialDto {
     private UUID materialId;
     private String name;
 }
+*/
