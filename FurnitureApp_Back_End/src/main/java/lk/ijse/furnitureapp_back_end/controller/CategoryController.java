@@ -34,6 +34,7 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseDTO(VarList.OK, "Categories Retrieved Successfully", categories));
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
         }
@@ -82,7 +83,23 @@ public class CategoryController {
     }
 
     @GetMapping("/names")
-    public List<String> getCategoryNames() {
-        return categoryService.getAllCategoryNames();
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    public ResponseEntity<ResponseDTO> getCategoryNames() {
+        try {
+            List<String> categoryNames = categoryService.getAllCategoryNames();
+
+            if (!categoryNames.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ResponseDTO(VarList.OK, "Category names retrieved successfully", categoryNames));
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ResponseDTO(VarList.Not_Found, "No category names found", null));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
+        }
     }
 }

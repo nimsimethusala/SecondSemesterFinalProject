@@ -16,10 +16,21 @@ public class ProductDto {
     private String name;
     private String description;
     private double price;
+    private int quantity;
     private String imageUrl;
     private String categoryName;
     private Category category;
     MultipartFile[] imageFiles;
+
+    public ProductDto(UUID productId, String name, String categoryName, double price, String description, String imageUrl, int quantity) {
+        this.productId = productId;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.imageUrl = imageUrl;
+        this.categoryName = categoryName;
+    }
 
     public ProductDto(UUID productId, String name, String categoryName, double price, String description, String imageUrl) {
         this.productId = productId;

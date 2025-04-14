@@ -13,7 +13,8 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
           rel="stylesheet">
-
+    <!--  Sweet Alert  -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         :root {
             --purple: #640D5F;
@@ -362,12 +363,6 @@
                 <li class="nav-item">
                     <a class="nav-link text-white mx-2 page-link" href="#" data-page="contact">Contact Us</a>
                 </li>
-                <!--<li class="nav-item ms-3">
-                    <a class="btn btn-sm px-4 py-2 rounded-pill" style="background-color: var(&#45;&#45;yellow); color: var(&#45;&#45;purple);" href="#" id="signInBtn">Sign In</a>
-                </li>
-                <li class="nav-item ms-2">
-                    <a class="btn btn-sm px-4 py-2 rounded-pill" style="background-color: var(&#45;&#45;pink); color: white;" href="#" id="signUpBtn">Sign Up</a>
-                </li>-->
             </ul>
         </div>
     </div>
@@ -400,409 +395,10 @@
         </div>
 
         <div class="category-nav mb-4" id="categoryNav">
-            <!--            <button class="category-button active" data-category="living-room"> Table </button>-->
-            <!--            <button class="category-button" data-category="bedroom"> Chair </button>-->
-            <!--            <button class="category-button" data-category="kitchen"> Wall Rack </button>-->
-            <!--            <button class="category-button" data-category="office"> Office </button>-->
-            <!--            <button class="category-button" data-category="outdoor"> Outdoor </button>-->
         </div>
 
         <div id="categoryContent"></div>
-
-        <!--&lt;!&ndash; Living Room Content &ndash;&gt;
-        <div id="living-room" class="category-content active">
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Modern Sectional Sofa">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Modern Sectional Sofa</h4>
-                    <p class="product-description">Elegant and comfortable design perfect for modern living spaces.</p>
-                    <div class="product-price">$1,299.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Minimalist Coffee Table">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Minimalist Coffee Table</h4>
-                    <p class="product-description">Sleek design with walnut finish and tempered glass top.</p>
-                    <div class="product-price">$449.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Accent Lounge Chair">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Accent Lounge Chair</h4>
-                    <p class="product-description">Contemporary chair with plush cushions and solid wood legs.</p>
-                    <div class="product-price">$599.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        &lt;!&ndash; Bedroom Content &ndash;&gt;
-        <div id="bedroom" class="category-content">
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Queen Platform Bed">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Queen Platform Bed</h4>
-                    <p class="product-description">Mid-century inspired bed frame with walnut finish.</p>
-                    <div class="product-price">$849.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="6-Drawer Dresser">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">6-Drawer Dresser</h4>
-                    <p class="product-description">Spacious storage with smooth-gliding drawers and brass pulls.</p>
-                    <div class="product-price">$799.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Bedside Table Set">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Bedside Table Set</h4>
-                    <p class="product-description">Set of two matching nightstands with hidden charging ports.</p>
-                    <div class="product-price">$399.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        &lt;!&ndash; Kitchen Content &ndash;&gt;
-        <div id="kitchen" class="category-content">
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Extendable Dining Table">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Extendable Dining Table</h4>
-                    <p class="product-description">Solid oak table that extends to seat up to 10 people.</p>
-                    <div class="product-price">$1,199.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Upholstered Dining Chairs">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Upholstered Dining Chairs</h4>
-                    <p class="product-description">Set of four comfortable dining chairs with stain-resistant
-                        fabric.</p>
-                    <div class="product-price">$699.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Kitchen Island Cart">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Kitchen Island Cart</h4>
-                    <p class="product-description">Mobile kitchen island with marble top and storage drawers.</p>
-                    <div class="product-price">$549.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        &lt;!&ndash; Office Content &ndash;&gt;
-        <div id="office" class="category-content">
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Adjustable Desk">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Adjustable Desk</h4>
-                    <p class="product-description">Height-adjustable desk with electric motors and memory presets.</p>
-                    <div class="product-price">$749.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Ergonomic Office Chair">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Ergonomic Office Chair</h4>
-                    <p class="product-description">Full-featured chair with lumbar support and adjustable armrests.</p>
-                    <div class="product-price">$399.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Bookcase with Cabinet">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Bookcase with Cabinet</h4>
-                    <p class="product-description">Tall bookshelf with closed storage at bottom for office supplies.</p>
-                    <div class="product-price">$529.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        &lt;!&ndash; Outdoor Content &ndash;&gt;
-        <div id="outdoor" class="category-content">
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Patio Dining Set">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Patio Dining Set</h4>
-                    <p class="product-description">Weather-resistant table and six chairs for outdoor dining.</p>
-                    <div class="product-price">$1,299.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Lounge Chair Set">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Lounge Chair Set</h4>
-                    <p class="product-description">Set of two adjustable lounge chairs with side table.</p>
-                    <div class="product-price">$649.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="/api/placeholder/400/320" alt="Outdoor Sofa">
-                    <div class="product-overlay">
-                        <div class="quick-view">Quick View</div>
-                    </div>
-                </div>
-                <div class="product-info">
-                    <h4 class="product-name">Outdoor Sofa</h4>
-                    <p class="product-description">Water-resistant sofa with thick cushions and aluminum frame.</p>
-                    <div class="product-price">$899.00</div>
-                    <div class="product-action">
-                        <a href="#" class="view-button">View Details <i class="fas fa-arrow-right"></i></a>
-                        <div class="icon-container">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>-->
     </div>
-
-    <!--     Testimonials-->
-    <!--<div class="py-5 my-5" style="background-color: var(&#45;&#45;purple);">
-        <div class="container py-4">
-            <div class="text-center mb-5">
-                <h2 class="font-heading font-bold text-4xl mb-2 text-white">What Clients Say</h2>
-                <p class="text-gray-300">Hear from our satisfied customers</p>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <div class="card border-0 shadow h-100 p-4">
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="flex-shrink-0">
-                                <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Client" class="rounded-circle" width="60">
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h5 class="mb-0 font-heading font-medium" style="color: var(&#45;&#45;pink);">Sarah Johnson</h5>
-                                <p class="mb-0 text-gray-600">Interior Designer</p>
-                            </div>
-                        </div>
-                        <div class="mb-3" style="color: var(&#45;&#45;yellow);">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p class="text-gray-600">"The quality and design of these furniture pieces exceeded my expectations. My clients are always impressed with the statement pieces I source from here."</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 mb-4">
-                    <div class="card border-0 shadow h-100 p-4">
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="flex-shrink-0">
-                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client" class="rounded-circle" width="60">
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h5 class="mb-0 font-heading font-medium" style="color: var(&#45;&#45;pink);">Michael Chen</h5>
-                                <p class="mb-0 text-gray-600">Homeowner</p>
-                            </div>
-                        </div>
-                        <div class="mb-3" style="color: var(&#45;&#45;yellow);">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p class="text-gray-600">"The custom sectional sofa we ordered fits perfectly in our living room. The ability to choose our own fabric and dimensions was exactly what we needed."</p>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 mb-4">
-                    <div class="card border-0 shadow h-100 p-4">
-                        <div class="d-flex align-items-center mb-4">
-                            <div class="flex-shrink-0">
-                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client" class="rounded-circle" width="60">
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h5 class="mb-0 font-heading font-medium" style="color: var(&#45;&#45;pink);">Amelia Taylor</h5>
-                                <p class="mb-0 text-gray-600">Office Manager</p>
-                            </div>
-                        </div>
-                        <div class="mb-3" style="color: var(&#45;&#45;yellow);">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <p class="text-gray-600">"We furnished our entire office with these ergonomic and stylish pieces. The team was professional from design consultation to delivery."</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>-->
 </section>
 
 <!-- About Us Section -->
@@ -1100,15 +696,16 @@
         <!-- Map -->
         <div class="mt-5 p-3 bg-white rounded shadow-sm">
             <div class="bg-light p-2 rounded" style="height: 400px;">
-                <!-- Replace with actual map or iframe -->
-                <div class="d-flex justify-content-center align-items-center h-100 bg-gray-200">
-                    <div class="text-center p-4">
-                        <i class="fas fa-map-marked-alt fa-3x mb-3" style="color: var(--purple);"></i>
-                        <h5 class="font-heading font-medium" style="color: var(--pink);">Our Location</h5>
-                        <p class="text-gray-600">123 Design Street, Creative City, 10001</p>
-                        <p class="small text-gray-500 mt-3">Map loading...</p>
-                    </div>
-                </div>
+                <!-- Actual Google Map iframe -->
+                <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.799516594164!2d79.90638037448207!3d6.794231619959097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2452606d3a221%3A0x86a9a8842b4ed252!2sNeat%20Wood%20Works!5e0!3m2!1sen!2slk!4v1744484268930!5m2!1sen!2slk"
+                        width="100%"
+                        height="100%"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
         </div>
     </div>
@@ -1174,13 +771,17 @@
         </div>
     </div>
 </footer>
-
+<script src="lib/jquery-3.7.1.min.js"></script>
 <!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="lib/jquery-3.7.1.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="js/cart.js"></script>
 <script src="js/category.js"></script>
 <script src="js/product.js"></script>
+<!--<script src="https://www.payhere.lk/lib/payhere.js"></script>-->
 
 <script>
     // Page Navigation

@@ -19,7 +19,5 @@ public class Payment {
     @OneToOne
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
-
-    private String paymentMethod;
     private double amount;
 }

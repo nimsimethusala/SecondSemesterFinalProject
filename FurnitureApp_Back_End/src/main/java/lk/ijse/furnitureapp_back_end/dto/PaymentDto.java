@@ -14,6 +14,5 @@ import java.util.UUID;
 public class PaymentDto {
     private UUID paymentId;
     private Order order;
-    private String paymentMethod;
     private double amount;
 }

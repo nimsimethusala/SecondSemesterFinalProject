@@ -1,11 +1,11 @@
 $(document).ready(function () {
-    let token = localStorage.getItem("jwtToken");
+    let token = localStorage.getItem("token");
 
     function loadUsers() {
         $.ajax({
             url: "http://localhost:8080/api/v1/adminuser/all",
             method: "GET",
-            // headers: { "Authorization": "Bearer " + token },
+            headers: { "Authorization": "Bearer " + token },
             success: function (response) {
                 console.log("response "+response.data[0].email )
                 let tableBody = $("#userTable");

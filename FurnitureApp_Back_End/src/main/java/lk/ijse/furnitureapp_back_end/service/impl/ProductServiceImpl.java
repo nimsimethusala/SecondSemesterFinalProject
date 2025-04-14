@@ -127,7 +127,8 @@ public class ProductServiceImpl implements ProductService {
                             category.getName(), // or product.getCategory().getName()
                             product.getPrice(),
                             product.getDescription(),
-                            product.getImageUrl()
+                            product.getImageUrl(),
+                            product.getQuantity()
                     ))
                     .toList();
 
@@ -154,5 +155,20 @@ public class ProductServiceImpl implements ProductService {
             dtos.add(dto);
         }
         return dtos;
+    }
+
+    @Override
+    public List<ProductDto> getAllByCategory(String categoryName) {
+        List<Product> products = productRepository.findByCategoryNameIgnoreCase(categoryName);
+
+        return products.stream().map(product -> new ProductDto(
+                product.getProductId(),
+                product.getName(),
+                product.getCategory().getName(),
+                product.getPrice(),
+                product.getDescription(),
+                product.getImageUrl(),
+                product.getQuantity()
+        )).collect(Collectors.toList());
     }
 }

@@ -19,4 +19,6 @@ public interface ProductService {
     Map<String, List<ProductDto>> getLatestThreeProductsPerCategory();
 
     List<ProductDto> getProductsByCategoryName(String categoryName);
+
+    List<ProductDto> getAllByCategory(String categoryName);
 }

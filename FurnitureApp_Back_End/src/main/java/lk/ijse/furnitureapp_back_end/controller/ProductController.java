@@ -40,11 +40,12 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseDTO> save(
             @RequestParam("name") String name,
             @RequestParam("categoryName") String categoryName,
             @RequestParam("price") double price,
+            @RequestParam("quantity") int quantity,
             @RequestParam("description") String description,
             @RequestParam(value = "image", required = false) MultipartFile imageFile) {
         try {
@@ -58,6 +59,7 @@ public class ProductController {
             if (imageFile != null && !imageFile.isEmpty()) {
                 product.setImageFiles(new MultipartFile[]{imageFile});
             }
+            product.setQuantity(quantity);
 
 //            System.out.println(product.getImageFiles());
 //            System.out.println(Arrays.toString(product.getImageFiles()));
@@ -104,12 +106,47 @@ public class ProductController {
         return ResponseEntity.ok(productService.getLatestThreeProductsPerCategory());
     }
 
+    /*@GetMapping("/latest-per-category")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    public ResponseEntity<ResponseDTO> getLatestProductsByCategory() {
+        try {
+            Map<String, List<ProductDto>> latestProducts = productService.getLatestThreeProductsPerCategory();
+
+            if (!latestProducts.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ResponseDTO(VarList.OK, "Latest products by category retrieved successfully", latestProducts));
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new ResponseDTO(VarList.Not_Found, "No products found for any category", null));
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
+        }
+    }*/
+
     @GetMapping("/category/{categoryName}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public ResponseEntity<ResponseDTO> getProductsByCategory(@PathVariable String categoryName) {
         try {
             List<ProductDto> products = productService.getProductsByCategoryName(categoryName);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseDTO(VarList.OK, "Products Retrieved Successfully", products));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
+        }
+    }
+
+    @GetMapping("/by-category/{category}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    public ResponseEntity<ResponseDTO> getAllProductsByCategory(@PathVariable String category) {
+        try {
+            List<ProductDto> products = productService.getAllByCategory(category);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseDTO(VarList.OK, "Latest Products Retrieved Successfully", products));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
