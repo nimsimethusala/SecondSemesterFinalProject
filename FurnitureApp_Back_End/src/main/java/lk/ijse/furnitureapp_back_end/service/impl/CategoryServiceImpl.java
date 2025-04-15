@@ -57,10 +57,9 @@ public class CategoryServiceImpl implements CategoryService {
             existingCategory.setStatus(category.getStatus());
 
             categoryRepository.save(existingCategory);
-            return VarList.OK; // Successfully updated
+            return VarList.OK;
         }
-
-        return VarList.Not_Found; // Return 404 if category doesn't exist
+        return VarList.Not_Found;
     }
 
     public List<String> getAllCategoryNames() {

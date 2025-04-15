@@ -16,7 +16,7 @@ $(document).ready(function () {
                             <td>${category.name}</td>
                             <td>${category.status}</td>
                             <td>
-                                <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#categoryModal" id="updateCategoryBtn" data-id="${category.id}"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#categoryUpdateModal" id="updateCategoryBtn" data-id="${category.id}"><i class="fas fa-edit"></i></button>
                                 <button class="deleteCategory btn btn-sm btn-danger" data-id="${category.categoryId}"><i class="fas fa-trash"></i></button>
                             </td>
                         </tr>
@@ -76,19 +76,6 @@ $(document).ready(function () {
 
                 response.data.forEach(product => {
                     container.append(`
-<!--                        <div class="col-md-4 mb-4">-->
-<!--                            <div class="card h-100 shadow-sm product-card">-->
-<!--                                <div class="card-img-wrapper">-->
-<!--                                    <img src="http://localhost:8080/images/${product.imageUrl}" class="card-img-top" alt="${product.name}">-->
-<!--                                </div>-->
-<!--                                <div class="card-body d-flex flex-column">-->
-<!--                                    <h5 class="card-title">${product.name}</h5>-->
-<!--                                    <p class="card-text text-truncate-3">${product.description}</p>-->
-<!--                                    <p class="card-text fw-bold">Rs. ${product.price}</p>-->
-<!--                                    // <a href="/product/${product.id}" class="btn btn-outline-primary mt-auto">View Details</a>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
                         <div class="col-md-4 mb-3">
                             <div class="card h-100 shadow-sm">
                                 <img src="http://localhost:8080/images/${product.imageUrl}" class="card-img-top" alt="${product.name}">
@@ -122,8 +109,8 @@ $(document).ready(function () {
     $("#addCategoryForm").on("click", function (e) {
         e.preventDefault();
         let categoryData = {
-            name: $("#categoryName").val(),
-            status: $("#categoryStatus").val()
+            name: $("#categorySaveName").val(),
+            status: $("#categorySaveStatus").val()
         };
 
         $.ajax({
@@ -141,8 +128,8 @@ $(document).ready(function () {
     $("#updateCategoryBtn").click(function () {
         let categoryId = $(this).data("id");
         let categoryData = {
-            name: $("#categoryName").val(),
-            status: $("#categoryStatus").val()
+            name: $("#categoryUpdateName").val(),
+            status: $("#categoryUpdateStatus").val()
         };
 
         $.ajax({
@@ -153,9 +140,7 @@ $(document).ready(function () {
             data: JSON.stringify(categoryData),
             success: function () {
                 loadCategories();
-                $("#addCategoryForm")[0].reset();
-                $("#updateCategoryBtn").hide();
-                $("#addCategoryBtn").show();
+                $("#updateCategoryForm")[0].reset();
             }
         });
     });

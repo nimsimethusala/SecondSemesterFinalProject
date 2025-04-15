@@ -41,7 +41,7 @@ public class CategoryController {
     }
 
     @PostMapping("/save")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public ResponseEntity<ResponseDTO> save(@Valid @RequestBody CategoryDto category) {
         try {
             int res = categoryService.saveCategory(category);
@@ -54,7 +54,7 @@ public class CategoryController {
     }
 
     @PostMapping("/delete/{categoryId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public ResponseEntity<ResponseDTO> delete(@PathVariable String categoryId) {
         System.out.println(categoryId);
         try {

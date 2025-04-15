@@ -187,7 +187,7 @@
                 <div class="crud-card">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h2>Category Management</h2>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#categoryModal"
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#categorySaveModal"
                                 id="saveCategoryBtn">
                             <i class="fas fa-plus me-2"></i>Add Category
                         </button>
@@ -204,22 +204,6 @@
                             </tr>
                             </thead>
                             <tbody id="categoryTable">
-                            <!--<tr>
-                              <td>1</td>
-                              <td>Living Room</td>
-                              <td>Furniture for living spaces</td>
-                              <td>
-                                <span class="badge bg-success">Active</span>
-                              </td>
-                              <td class="table-actions">
-                                <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#categoryModal" id="updateCategoryBtn">
-                                  <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-danger" id="deleteCategoryBtn">
-                                  <i class="fas fa-trash"></i>
-                                </button>
-                              </td>
-                            </tr>-->
                             </tbody>
                         </table>
                     </div>
@@ -249,20 +233,6 @@
                             </tr>
                             </thead>
                             <tbody id="productTable">
-                            <!--              <tr>-->
-                            <!--                <td>1</td>-->
-                            <!--                <td>Modern Sofa</td>-->
-                            <!--                <td>Living Room</td>-->
-                            <!--                <td>$1,200</td>-->
-                            <!--                <td class="table-actions">-->
-                            <!--                  <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#productModal" id="updateProductBtn">-->
-                            <!--                    <i class="fas fa-edit"></i>-->
-                            <!--                  </button>-->
-                            <!--                  <button class="btn btn-sm btn-danger" id="deleteProductBtn">-->
-                            <!--                    <i class="fas fa-trash"></i>-->
-                            <!--                  </button>-->
-                            <!--                </td>-->
-                            <!--              </tr>-->
                             </tbody>
                         </table>
                     </div>
@@ -309,12 +279,12 @@
                 </div>
             </div>
 
-            <!-- Category Modal (Add/Edit) -->
-            <div class="modal fade" id="categoryModal" tabindex="-1">
+            <!-- Category Modal (Add) -->
+            <div class="modal fade" id="categorySaveModal" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Add/Edit Category</h5>
+                            <h5 class="modal-title">Add Category</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div class="modal-body">
@@ -322,11 +292,11 @@
                                 <div class="mb-3">
                                     <label class="form-label">Category Name</label>
                                     <input type="text" class="form-control" placeholder="Enter category name"
-                                           id="categoryName">
+                                           id="categorySaveName">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Status</label>
-                                    <select class="form-select" id="categoryStatus">
+                                    <select class="form-select" id="categorySaveStatus">
                                         <option>Active</option>
                                         <option>Inactive</option>
                                     </select>
@@ -337,6 +307,40 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="button" class="btn btn-primary" id="addCategoryForm" data-bs-dismiss="modal">
                                 Save Category
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Modal (Edit) -->
+            <div class="modal fade" id="categoryUpdateModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Category</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label">Category Name</label>
+                                    <input type="text" class="form-control" placeholder="Enter category name"
+                                           id="categoryUpdateName">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select" id="categoryUpdateStatus">
+                                        <option>Active</option>
+                                        <option>Inactive</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="updateCategoryForm" data-bs-dismiss="modal">
+                                Update Category
                             </button>
                         </div>
                     </div>
