@@ -74,8 +74,8 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/delete/{productId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/delete/{productId}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public ResponseEntity<ResponseDTO> delete(@PathVariable String productId) {
         try {
             int res = productService.deleteProduct(productId);

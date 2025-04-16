@@ -334,7 +334,7 @@ $(document).ready(function () {
         if (confirm("Are you sure you want to delete this product?")) {
             $.ajax({
                 url: `http://localhost:8080/api/v1/products/delete/${productId}`,
-                method: "DELETE",
+                method: "POST",
                 headers: {"Authorization": "Bearer " + token},
                 success: function () {
                     alert("Product deleted successfully!");

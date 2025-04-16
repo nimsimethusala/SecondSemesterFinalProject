@@ -1,30 +1,27 @@
 package lk.ijse.furnitureapp_back_end.service.impl;
 
+import jakarta.transaction.Transactional;
 import lk.ijse.furnitureapp_back_end.dto.UserDTO;
 import lk.ijse.furnitureapp_back_end.entity.User;
 import lk.ijse.furnitureapp_back_end.repo.UserRepository;
-import lk.ijse.furnitureapp_back_end.service.UserService;
+import lk.ijse.furnitureapp_back_end.service.AdminUserService;
 import lk.ijse.furnitureapp_back_end.util.VarList;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
 @Service
 @Transactional
-public class UserServiceImpl implements UserDetailsService, UserService {
-
+public class AdminUserServiceImpl implements AdminUserService {
     @Autowired
     private UserRepository userRepository;
 
@@ -82,7 +79,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         } else {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-            userDTO.setRole("USER");
+            userDTO.setRole("ADMIN");
             userRepository.save(modelMapper.map(userDTO, User.class));
             return VarList.Created;
         }

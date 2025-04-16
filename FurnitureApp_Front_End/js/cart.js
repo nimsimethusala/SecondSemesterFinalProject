@@ -205,7 +205,7 @@ $(document).on("click", ".btn-remove-from-cart", function () {
 
 $("#saveCart").click(function () {
     if (cart.length === 0) {
-        Swal.fire("Oops!", "Your cart is empty!", "warning");
+        alert("Oops! Your cart is empty!");
         return;
     }
 
@@ -220,78 +220,69 @@ $("#saveCart").click(function () {
 
     summaryText += `\nTotal: Rs. ${total}`;
 
-    Swal.fire({
-        title: "Confirm Order",
-        text: summaryText,
-        icon: "info",
-        showCancelButton: true,
-        confirmButtonText: "Place Order",
-        cancelButtonText: "Cancel"
-    }).then(result => {
-        if (result.isConfirmed) {
+    if (confirm("Confirm Order:\n\n" + summaryText)) {
 
-            // 🔹 Fetch current user first
-            getCurrentUser(function (userId) {
+        // 🔹 Fetch current user first
+        getCurrentUser(function (userId) {
+            console.log("User id : " + userId)
+            // 🔹 Step 1: Save Cart
+            const cartPayload = {
+                userId:userId,
+                items: cart.map(item => ({
+                    productId: item.id,
+                    quantity: item.quantity
+                }))
+            };
 
-                // 🔹 Step 1: Save Cart
-                const cartPayload = {
-                    items: cart.map(item => ({
-                        productId: item.id,
-                        quantity: item.quantity
-                    }))
-                };
+            $.ajax({
+                url: "http://localhost:8080/api/v1/cart/save",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(cartPayload),
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("token")
+                },
+                success: function () {
+                    console.log("Cart saved.");
 
-                $.ajax({
-                    url: "http://localhost:8080/api/v1/cart/save",
-                    method: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(cartPayload),
-                    headers: {
-                        "Authorization": "Bearer " + localStorage.getItem("token")
-                    },
-                    success: function () {
-                        console.log("Cart saved.");
+                    // 🔹 Step 2: Place Order
+                    const orderPayload = {
+                        userId: userId,
+                        totalAmount: total,
+                        items: cart.map(item => ({
+                            productId: item.id,
+                            quantity: item.quantity,
+                            price: item.price
+                        })),
+                        paymentRef: "PAY-" + new Date().getTime()
+                    };
 
-                        // 🔹 Step 2: Place Order
-                        const orderPayload = {
-                            userId: userId,
-                            totalAmount: total,
-                            items: cart.map(item => ({
-                                productId: item.id,
-                                quantity: item.quantity,
-                                price: item.price
-                            })),
-                            paymentRef: "PAY-" + new Date().getTime() // Simulate payment ref
-                        };
+                    $.ajax({
+                        url: "http://localhost:8080/api/v1/orders/place",
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(orderPayload),
+                        headers: {
+                            "Authorization": "Bearer " + localStorage.getItem("token")
+                        },
+                        success: function (response) {
+                            alert(`Order placed!`);
+                            cart = [];
+                            updateCartCount();
+                            displayCartItems();
+                            $("#cartModal").modal("hide");
+                        },
+                        error: function () {
+                            alert("Failed to place order.");
+                        }
+                    });
 
-                        $.ajax({
-                            url: "http://localhost:8080/api/v1/orders/place",
-                            method: "POST",
-                            contentType: "application/json",
-                            data: JSON.stringify(orderPayload),
-                            headers: {
-                                "Authorization": "Bearer " + localStorage.getItem("token")
-                            },
-                            success: function (response) {
-                                Swal.fire("Success", `Order placed! Order ID: ${response.orderId}`, "success");
-                                cart = [];
-                                updateCartCount();
-                                displayCartItems();
-                                $("#cartModal").modal("hide");
-                            },
-                            error: function () {
-                                Swal.fire("Error", "Failed to place order.", "error");
-                            }
-                        });
-
-                    },
-                    error: function () {
-                        Swal.fire("Error", "Failed to save cart.", "error");
-                    }
-                });
-
+                },
+                error: function () {
+                    alert("Failed to save cart.");
+                }
             });
 
-        }
-    });
+        });
+    }
 });

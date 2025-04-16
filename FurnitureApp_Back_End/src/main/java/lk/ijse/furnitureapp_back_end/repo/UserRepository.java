@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     int deleteByEmail(String userName);
 
+    long count();
+
 }

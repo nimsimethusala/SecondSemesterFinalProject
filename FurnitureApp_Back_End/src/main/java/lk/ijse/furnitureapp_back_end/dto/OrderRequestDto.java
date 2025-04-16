@@ -9,6 +9,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class OrderRequestDto {
     private UUID userId;
     private UUID orderId;

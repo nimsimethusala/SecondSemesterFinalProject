@@ -138,27 +138,6 @@
             }
         }
 
-        /*.product-card {
-            flex: 1 1 300px;
-            margin: 15px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            transition: var(--transition);
-            background: white;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .product-image {
-            height: 250px;
-            overflow: hidden;
-            position: relative;
-        }*/
-
         .product-image img {
             width: 100%;
             height: 100%;
@@ -201,81 +180,6 @@
         .product-card:hover .quick-view {
             transform: translateY(0);
         }
-
-        /*.product-info {
-            padding: 20px;
-        }
-
-        .product-name {
-            color: var(--pink);
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .product-description {
-            color: #6c757d;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-
-        .product-price {
-            color: var(--purple);
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-        }
-
-        .product-action {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .view-button {
-            color: var(--orange);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .view-button:hover {
-            gap: 10px;
-        }
-
-        .icon-container {
-            width: 40px;
-            height: 40px;
-            background: var(--light-gray);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .icon-container:hover {
-            background: var(--orange);
-            color: white;
-        }
-
-        !* About Section Gradient *!
-        .about-gradient {
-            background: linear-gradient(135deg, var(--purple), var(--pink));
-        }
-
-        !* Service Cards *!
-        .service-card {
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            border-bottom: 3px solid var(--yellow);
-        }*/
 
         /* Custom Button */
         .btn-custom {
@@ -442,6 +346,41 @@
         <div id="categoryContent"></div>
     </div>
 </section>
+
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">Payment Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>Order Summary</h5>
+                <div id="order-summary"></div>
+                <form id="payment-form">
+                    <div class="mb-3">
+                        <label for="paymentReference" class="form-label">Payment Reference Number</label>
+                        <input type="text" class="form-control" id="paymentReference" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="paymentAmount" class="form-label">Amount (Rs.)</label>
+                        <input type="text" class="form-control" id="paymentAmount" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="paymentMethod" class="form-label">Payment Method</label>
+                        <select class="form-select" id="paymentMethod" required>
+                            <option value="bankTransfer">Bank Transfer</option>
+                            <option value="mobilePayment">Mobile Payment</option>
+                            <option value="cash">Cash</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- About Us Section -->
 <section id="about" class="page-section pt-5 mt-5">
@@ -771,10 +710,12 @@
 
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!--<script src="https://www.payhere.lk/lib/payhere.js"></script>script-->
+
 <script src="js/cart.js"></script>
 <script src="js/category.js"></script>
 <script src="js/product.js"></script>
-<!--<script src="https://www.payhere.lk/lib/payhere.js"></script>-->
 
 <script>
     // Page Navigation

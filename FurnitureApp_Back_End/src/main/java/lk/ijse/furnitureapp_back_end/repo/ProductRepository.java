@@ -20,4 +20,6 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query("SELECT p FROM Product p WHERE LOWER(p.category.name) = LOWER(:categoryName)")
     List<Product> findByCategoryNameIgnoreCase(String categoryName);
 
+    long count();
+
 }

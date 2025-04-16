@@ -1,18 +1,21 @@
 package lk.ijse.furnitureapp_back_end.dto;
 
-import jakarta.persistence.*;
 import lk.ijse.furnitureapp_back_end.entity.Order;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class PaymentDto {
     private UUID paymentId;
-    private Order order;
     private double amount;
+    private String paymentRef;
+    private String status;
+    private Order order;
 }

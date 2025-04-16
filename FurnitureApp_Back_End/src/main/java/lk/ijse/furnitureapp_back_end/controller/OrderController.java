@@ -24,11 +24,13 @@ public class OrderController {
     @PostMapping("/place")
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<ResponseDTO> placeOrder(@RequestBody OrderRequestDto orderRequestDto) {
+        System.out.println(orderRequestDto.toString());
         try {
             OrderDto placedOrder = orderService.placeOrder(orderRequestDto);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ResponseDTO(VarList.Created, "Order placed successfully", placedOrder));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, "Failed to place order", null));
         }

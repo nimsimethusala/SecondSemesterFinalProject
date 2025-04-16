@@ -40,6 +40,8 @@ public class CartServiceImpl implements CartService {
         Cart cart = new Cart();
         cart.setUser(user);
 
+        System.out.println(user);
+
         // Save the cart first (so it has a generated ID)
         Cart savedCart = cartRepository.save(cart);
 

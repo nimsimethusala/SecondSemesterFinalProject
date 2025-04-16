@@ -3,6 +3,7 @@ package lk.ijse.furnitureapp_back_end.controller;
 import jakarta.validation.Valid;
 import lk.ijse.furnitureapp_back_end.dto.ResponseDTO;
 import lk.ijse.furnitureapp_back_end.dto.UserDTO;
+import lk.ijse.furnitureapp_back_end.service.AdminUserService;
 import lk.ijse.furnitureapp_back_end.service.UserService;
 import lk.ijse.furnitureapp_back_end.util.JwtUtil;
 import lk.ijse.furnitureapp_back_end.util.VarList;
@@ -16,17 +17,17 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/adminuser")
 public class AdminUserController {
-    private final UserService userService;
+    private final AdminUserService adminUserService;
 
-    public AdminUserController(UserService userService) {
-        this.userService = userService;
+    public AdminUserController(AdminUserService adminUserService) {
+        this.adminUserService = adminUserService;
     }
 
     @PostMapping("/register")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public ResponseEntity<String> registerUser(@RequestBody @Valid UserDTO userDTO) {
         System.out.println("Admin user save = "+userDTO);
-        int result = userService.saveUser(userDTO);
+        int result = adminUserService.saveUser(userDTO);
 
         if (result == VarList.Created) {
             return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!");
@@ -41,7 +42,7 @@ public class AdminUserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseDTO> updateUser(@RequestBody @Valid UserDTO userDTO) {
         try {
-            int res = userService.updateUser(userDTO);
+            int res = adminUserService.updateUser(userDTO);
             return switch (res) {
                 case VarList.OK -> ResponseEntity.ok(new ResponseDTO(VarList.OK, "User Updated Successfully", userDTO));
                 case VarList.Not_Found -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(VarList.Not_Found, "User Not Found", null));
@@ -54,10 +55,10 @@ public class AdminUserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public ResponseEntity<ResponseDTO> deleteUser(@PathVariable String id) {
         try {
-            int res = userService.deleteUser(id);
+            int res = adminUserService.deleteUser(id);
             return switch (res) {
                 case VarList.OK -> ResponseEntity.ok(new ResponseDTO(VarList.OK, "User Deleted Successfully", null));
                 case VarList.Not_Found -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseDTO(VarList.Not_Found, "User Not Found", null));
@@ -72,7 +73,7 @@ public class AdminUserController {
     @GetMapping("/all")
     public ResponseEntity<ResponseDTO> getAllUsers() {
         try {
-            List<UserDTO> users = userService.getAllUsers();
+            List<UserDTO> users = adminUserService.getAllUsers();
             return ResponseEntity.ok(new ResponseDTO(VarList.OK, "User List Retrieved", users));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

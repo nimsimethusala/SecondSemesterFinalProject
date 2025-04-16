@@ -51,7 +51,7 @@ $(document).ready(function () {
             data: JSON.stringify(userData),
             success: function () {
                 loadUsers();
-                $("#addUserForm")[0].reset();
+                $("#userForm")[0].reset();
             },
             error: function () {
                 alert("Error saving user.");
