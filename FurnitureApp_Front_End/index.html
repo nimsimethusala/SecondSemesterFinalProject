@@ -347,41 +347,6 @@
     </div>
 </section>
 
-<!-- Payment Modal -->
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="paymentModalLabel">Payment Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <h5>Order Summary</h5>
-                <div id="order-summary"></div>
-                <form id="payment-form">
-                    <div class="mb-3">
-                        <label for="paymentReference" class="form-label">Payment Reference Number</label>
-                        <input type="text" class="form-control" id="paymentReference" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="paymentAmount" class="form-label">Amount (Rs.)</label>
-                        <input type="text" class="form-control" id="paymentAmount" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="paymentMethod" class="form-label">Payment Method</label>
-                        <select class="form-select" id="paymentMethod" required>
-                            <option value="bankTransfer">Bank Transfer</option>
-                            <option value="mobilePayment">Mobile Payment</option>
-                            <option value="cash">Cash</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit Payment</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- About Us Section -->
 <section id="about" class="page-section pt-5 mt-5">
     <div class="container pt-5">

@@ -49,33 +49,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public UserDTO searchUser(String username) {
-        if (userRepository.existsByEmail(username)) {
-            User user=userRepository.findByEmail(username);
-            return modelMapper.map(user,UserDTO.class);
-        } else {
-            return null;
-        }
-    }
-
-    /*@Override
-    public int saveUser(UserDTO userDTO) {
-        if (userRepository.existsByEmail(userDTO.getEmail())) {
-            return VarList.Not_Acceptable;
-        } else {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-            System.out.println(userDTO.getRole());
-            if (userDTO.getRole().equals("admin") || userDTO.getRole().equals("ADMIN") || userDTO.getRole().equals("Admin")) {
-                userDTO.setRole("ADMIN");
-            }
-            userDTO.setRole("USER");
-            userRepository.save(modelMapper.map(userDTO, User.class));
-            return VarList.Created;
-        }
-    }*/
-
-    @Override
     public int saveUser(UserDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             return VarList.Not_Acceptable;
@@ -86,37 +59,5 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             userRepository.save(modelMapper.map(userDTO, User.class));
             return VarList.Created;
         }
-    }
-
-    @Override
-    public int updateUser(UserDTO userDTO) {
-        if (userRepository.existsByEmail(userDTO.getEmail())) {
-            User user = userRepository.findByEmail(userDTO.getEmail());
-            user.setName(userDTO.getName());
-            user.setPassword(new BCryptPasswordEncoder().encode(userDTO.getPassword()));
-            user.setRole(userDTO.getRole());
-            userRepository.save(user);
-            return VarList.OK;
-        } else {
-            return VarList.Not_Found;
-        }
-    }
-
-    @Override
-    public int deleteUser(String email) {
-        if (userRepository.existsByEmail(email)) {
-            userRepository.deleteByEmail(email);
-            return VarList.OK;
-        } else {
-            return VarList.Not_Found;
-        }
-    }
-
-    @Override
-    public List<UserDTO> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream()
-                .map(user -> modelMapper.map(user, UserDTO.class))
-                .collect(Collectors.toList());
     }
 }

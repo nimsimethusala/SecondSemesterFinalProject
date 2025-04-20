@@ -36,19 +36,20 @@ public class CartServiceImpl implements CartService {
         User user = userRepository.findById(cartSaveDto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Create the cart entity
-        Cart cart = new Cart();
-        cart.setUser(user);
+        Optional<Cart> existingCart = cartRepository.findByUser(user);
+        Cart savedCart;
+        if (existingCart.isPresent()) {
+            savedCart = existingCart.get();
+        } else {
+            Cart cart = new Cart();
+            cart.setUser(user);
+            savedCart = cartRepository.save(cart);
+        }
 
-        System.out.println(user);
-
-        // Save the cart first (so it has a generated ID)
-        Cart savedCart = cartRepository.save(cart);
-
-        // Now convert DTO items to CartItem entities
+        // Convert DTO items to CartItem entities
         List<CartItem> cartItems = cartSaveDto.getItems().stream().map(dto -> {
             Product product = new Product();
-            product.setProductId(dto.getProductId()); // only set ID if you’re not fetching from DB
+            product.setProductId(dto.getProductId());
 
             CartItem item = new CartItem();
             item.setCart(savedCart);
@@ -58,14 +59,15 @@ public class CartServiceImpl implements CartService {
             return item;
         }).collect(Collectors.toList());
 
-        // Save all items
+        // Save all new cart items
         cartItemRepository.saveAll(cartItems);
 
-        // Set the saved items to cart (for mapping back to DTO)
+        // Attach items to the cart for DTO mapping
         savedCart.setCartItems(cartItems);
 
         return mapToDto(savedCart);
     }
+
 
 
     @Override
@@ -86,20 +88,6 @@ public class CartServiceImpl implements CartService {
         cartRepository.save(cart);
     }
 
-    @Override
-    public CartDto updateItemQuantity(UUID userId, UUID itemId, int quantity) {
-        CartItem item = cartItemRepository.findById(itemId)
-                .orElseThrow(() -> new RuntimeException("Item not found in cart"));
-
-        item.setQuantity(quantity);
-        cartItemRepository.save(item);
-
-        Cart updatedCart = cartRepository.findByUser_Uid(userId)
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
-
-        return mapToDto(updatedCart);
-    }
-
     private CartDto mapToDto(Cart cart) {
         List<CartItemResponseDto> itemDtos = cart.getCartItems().stream()
                 .map(item -> new CartItemResponseDto(
@@ -107,7 +95,7 @@ public class CartServiceImpl implements CartService {
                         item.getProduct().getName(),
                         item.getProduct().getImageUrl(),
                         item.getQuantity(),
-                        item.getProduct().getPrice() * item.getQuantity()// total price or per unit?
+                        item.getProduct().getPrice() * item.getQuantity()
                 ))
                 .collect(Collectors.toList());
 

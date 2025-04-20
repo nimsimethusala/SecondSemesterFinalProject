@@ -31,6 +31,7 @@ public class ProductController {
     public ResponseEntity<ResponseDTO> getAll() {
         try {
             List<ProductDto> products = productService.getAllProducts();
+            System.out.println("Products all : " + products);
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ResponseDTO(VarList.OK, "Products Retrieved Successfully", products));
         } catch (Exception e) {
@@ -60,9 +61,6 @@ public class ProductController {
                 product.setImageFiles(new MultipartFile[]{imageFile});
             }
             product.setQuantity(quantity);
-
-//            System.out.println(product.getImageFiles());
-//            System.out.println(Arrays.toString(product.getImageFiles()));
 
             int res = productService.saveProduct(product);
 
@@ -105,27 +103,6 @@ public class ProductController {
     public ResponseEntity<Map<String, List<ProductDto>>> getLatestProductsByCategory() {
         return ResponseEntity.ok(productService.getLatestThreeProductsPerCategory());
     }
-
-    /*@GetMapping("/latest-per-category")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    public ResponseEntity<ResponseDTO> getLatestProductsByCategory() {
-        try {
-            Map<String, List<ProductDto>> latestProducts = productService.getLatestThreeProductsPerCategory();
-
-            if (!latestProducts.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ResponseDTO(VarList.OK, "Latest products by category retrieved successfully", latestProducts));
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new ResponseDTO(VarList.Not_Found, "No products found for any category", null));
-            }
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
-        }
-    }*/
 
     @GetMapping("/category/{categoryName}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")

@@ -7,9 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.List;
 
 public interface AdminUserService {
-    UserDetails loadUserByUsername(String email) throws UsernameNotFoundException;
-
-    UserDTO searchUser(String username);
 
     int saveUser(UserDTO userDTO);
 

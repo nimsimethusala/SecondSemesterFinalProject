@@ -1,24 +1,20 @@
 package lk.ijse.furnitureapp_back_end.service.impl;
 
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.transaction.Transactional;
-import lk.ijse.furnitureapp_back_end.dto.OrderDto;
-import lk.ijse.furnitureapp_back_end.dto.OrderItemDto;
-import lk.ijse.furnitureapp_back_end.dto.OrderRequestDto;
-import lk.ijse.furnitureapp_back_end.entity.Order;
-import lk.ijse.furnitureapp_back_end.entity.OrderItem;
-import lk.ijse.furnitureapp_back_end.entity.Payment;
-import lk.ijse.furnitureapp_back_end.entity.User;
-import lk.ijse.furnitureapp_back_end.repo.OrderItemRepository;
-import lk.ijse.furnitureapp_back_end.repo.OrderRepository;
-import lk.ijse.furnitureapp_back_end.repo.PaymentRepository;
-import lk.ijse.furnitureapp_back_end.repo.UserRepository;
+import lk.ijse.furnitureapp_back_end.dto.*;
+import lk.ijse.furnitureapp_back_end.entity.*;
+import lk.ijse.furnitureapp_back_end.repo.*;
 import lk.ijse.furnitureapp_back_end.service.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -27,15 +23,14 @@ public class OrderServiceImpl implements OrderService {
     private final OrderItemRepository orderItemRepository;
     private final PaymentRepository paymentRepository;
     private final UserRepository userRepository;
+    private final ProductRepository productRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository,
-                            OrderItemRepository orderItemRepository,
-                            PaymentRepository paymentRepository,
-                            UserRepository userRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, PaymentRepository paymentRepository, UserRepository userRepository, ProductRepository productRepository) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.paymentRepository = paymentRepository;
         this.userRepository = userRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -45,34 +40,47 @@ public class OrderServiceImpl implements OrderService {
         User user = userRepository.findById(orderRequestDto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Save payment first
-        Payment savedPayment = paymentRepository.save(new Payment(
-                orderRequestDto.getPayment().getPaymentId(),
-                orderRequestDto.getPayment().getOrder(),
-                orderRequestDto.getPayment().getAmount()
-        ));
 
-        // Create order
+//         Create order
         Order order = new Order();
-        order.setOrderId(orderRequestDto.getOrderId() != null ? orderRequestDto.getOrderId() : UUID.randomUUID());
         order.setUser(user);
         order.setOrderDate(LocalDateTime.now());
         order.setTotalAmount(orderRequestDto.getTotalAmount());
-        order.setPayment(savedPayment);
 
         Order savedOrder = orderRepository.save(order);
+        System.out.println(savedOrder.getOrderId());
+
 
         // Save order items
-        List<OrderItem> orderItems = new ArrayList<>();
         for (OrderItemDto itemDto : orderRequestDto.getItems()) {
             OrderItem item = new OrderItem();
-            item.setId(itemDto.getId() != null ? itemDto.getId() : UUID.randomUUID());
+
             item.setOrder(savedOrder);
             item.setPrice(itemDto.getPrice());
             item.setQuantity(itemDto.getQuantity());
-            orderItems.add(item);
+
+            System.out.println(itemDto);
+
+            Product product = productRepository.findById(itemDto.getId())
+                    .orElseThrow(() -> new RuntimeException("Product not found: " + itemDto.getProductId()));
+            item.setProduct(product);
+
+            System.out.println("OrderItem: " + item);
+            orderItemRepository.save(item);
         }
-        orderItemRepository.saveAll(orderItems);
+
+        //update products
+        for (OrderItemDto itemDto : orderRequestDto.getItems()) {
+            Product product = productRepository.findById(itemDto.getId())
+                    .orElseThrow(() -> new RuntimeException("Product not found: " + itemDto.getProductId()));
+            product.setQuantity(product.getQuantity() - itemDto.getQuantity());
+        }
+
+//      Save payment first
+        Payment payment = new Payment();
+        payment.setAmount(orderRequestDto.getTotalAmount());
+        payment.setOrder(savedOrder);
+        Payment savedPayment = paymentRepository.save(payment);
 
         // Build response DTO
         OrderDto response = new OrderDto();
@@ -93,8 +101,16 @@ public class OrderServiceImpl implements OrderService {
                 order.getOrderId(),
                 order.getUser(),
                 order.getOrderDate(),
-                order.getTotalAmount(),
-                order.getPayment()
+                order.getTotalAmount()
         );
+    }
+
+    @Override
+    public List<OrderResponseDto> getAllOrders() {
+        List<Order> orderList = orderRepository.findAll();
+
+        return orderList.stream().map(order ->
+                new OrderResponseDto(order.getOrderId(), order.getOrderDate(), order.getTotalAmount(), order.getUser().getName())
+        ).collect(Collectors.toList());
     }
 }

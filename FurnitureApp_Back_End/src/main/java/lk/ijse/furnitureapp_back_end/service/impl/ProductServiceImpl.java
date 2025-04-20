@@ -40,7 +40,9 @@ public class ProductServiceImpl implements ProductService {
                         product.getCategory().getName(),
                         product.getPrice(),
                         product.getDescription(),
-                        product.getImageUrl())
+                        product.getImageUrl(),
+                        product.getQuantity()
+                )
         ).collect(Collectors.toList());
     }
 
@@ -54,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
             MultipartFile[] files = product.getImageFiles();
 
 
-            if (files != null && files.length > 0) { // Check if files exist
+            if (files != null && files.length > 0) {
                 StringBuilder filePaths = new StringBuilder();
                 for (MultipartFile file : files) {
 
@@ -67,7 +69,6 @@ public class ProductServiceImpl implements ProductService {
                 fileUrl = filePaths.length() > 0 ? filePaths.substring(0, filePaths.length() - 1) : null;
             }
 
-            // Get Category by Name (Ensure category exists)
             Category category = categoryRepository.findByName(product.getCategoryName())
                     .orElseThrow(() -> new RuntimeException("Category not found: " + product.getCategoryName()));
 
@@ -75,9 +76,11 @@ public class ProductServiceImpl implements ProductService {
                     product.getName(),
                     category,
                     product.getPrice(),
+                    product.getQuantity(),
                     product.getDescription(),
                     fileUrl
             );
+
 
             productRepository.save(newProduct);
             return VarList.Created;
@@ -107,10 +110,10 @@ public class ProductServiceImpl implements ProductService {
             existingProduct.setImageUrl(product.getImageUrl());
 
             productRepository.save(existingProduct);
-            return VarList.OK; // Successfully updated
+            return VarList.OK;
         }
 
-        return VarList.Not_Found; // Return 404 if product doesn't exist
+        return VarList.Not_Found;
     }
 
     public Map<String, List<ProductDto>> getLatestThreeProductsPerCategory() {
@@ -124,7 +127,7 @@ public class ProductServiceImpl implements ProductService {
                     .map(product -> new ProductDto(
                             product.getProductId(),
                             product.getName(),
-                            category.getName(), // or product.getCategory().getName()
+                            category.getName(),
                             product.getPrice(),
                             product.getDescription(),
                             product.getImageUrl(),
@@ -149,8 +152,8 @@ public class ProductServiceImpl implements ProductService {
             dto.setName(product.getName());
             dto.setPrice(product.getPrice());
             dto.setDescription(product.getDescription());
-            dto.setCategoryName(product.getCategory().getName()); // Assuming it's always not null
-            dto.setImageUrl(product.getImageUrl()); // use setImageUrl instead of setImagePaths
+            dto.setCategoryName(product.getCategory().getName());
+            dto.setImageUrl(product.getImageUrl());
 
             dtos.add(dto);
         }

@@ -11,6 +11,4 @@ public interface CartService {
     CartDto getCartByUserId(UUID userId);
 
     void clearCartByUserId(UUID userId);
-
-    CartDto updateItemQuantity(UUID userId, UUID itemId, int quantity);
 }

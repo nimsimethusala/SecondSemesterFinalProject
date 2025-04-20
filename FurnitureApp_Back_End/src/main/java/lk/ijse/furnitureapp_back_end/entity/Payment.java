@@ -16,8 +16,8 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID paymentId;
 
-    @OneToOne
-    @JoinColumn(name = "order_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "orderId")
     private Order order;
     private double amount;
 }

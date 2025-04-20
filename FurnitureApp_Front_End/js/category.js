@@ -26,6 +26,12 @@ $(document).ready(function () {
         });
     }
 
+    $("#categoryTableSet").on("click", "#updateCategoryBtn", function () {
+        let catagaryId = $(this).closest('tr').find('td').first().text();
+        console.log(catagaryId);
+        $("#editCategoryId").val(catagaryId);
+    });
+
     function loadCategoryButtons() {
         $.ajax({
             url: "http://localhost:8080/api/v1/categories/names",
@@ -126,7 +132,7 @@ $(document).ready(function () {
     });
 
     $("#updateCategoryBtn").click(function () {
-        let categoryId = $(this).data("id");
+        let categoryId = $("#editCatagoryId").val();
         let categoryData = {
             name: $("#categoryUpdateName").val(),
             status: $("#categoryUpdateStatus").val()
@@ -155,6 +161,9 @@ $(document).ready(function () {
                 headers: {"Authorization": "Bearer " + token, "Access-Control-Allow-Origin": "*"},
                 success: function () {
                     loadCategories();
+                },
+                error: function (xhr) {
+                    alert("Error deleting category: " + xhr.responseJSON.message);
                 }
             });
         }

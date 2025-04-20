@@ -9,9 +9,4 @@ import java.util.List;
 
 public interface UserService {
     int saveUser(UserDTO userDTO);
-    UserDTO searchUser(String username);
-    int updateUser(UserDTO userDTO);
-    int deleteUser(String email);
-
-    List<UserDTO> getAllUsers();
 }

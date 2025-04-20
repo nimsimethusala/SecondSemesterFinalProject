@@ -12,6 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Product {
 
     @Id
@@ -29,10 +30,11 @@ public class Product {
     private Category category;
 
     // Constructor excluding productId since it will be auto-generated
-    public Product(String name, Category category, double price, String description, String imageUrl) {
+    public Product(String name, Category category, double price,int quantity, String description, String imageUrl) {
         this.name = name;
         this.category = category;
         this.price = price;
+        this.quantity = quantity;
         this.description = description;
         this.imageUrl = imageUrl;
     }

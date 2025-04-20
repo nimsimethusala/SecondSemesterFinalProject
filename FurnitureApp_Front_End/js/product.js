@@ -15,10 +15,9 @@ $(document).ready(function () {
                         <tr>
                             <td>${product.productId}</td>
                             <td>${product.name}</td>
-                            <td>${product.category}</td>
+                            <td>${product.categoryName}</td>
                             <td>${product.price}</td>
                             <td>${product.quantity}</td>
-<!--                            <td ><img alt="${product.imageUrl}" class="product-image" src="http://localhost:8080/images/${product.imageUrl}"></td>-->
                             <td>
                                 <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#productModal" id="updateProductBtn" data-id="${product.productId}"><i class="fas fa-edit"></i></button>
                                 <button class="deleteProduct btn btn-sm btn-danger" data-id="${product.productId}"><i class="fas fa-trash"></i></button>
@@ -29,6 +28,12 @@ $(document).ready(function () {
             }
         });
     }
+
+    $("#categoryTableSet").on("click", "#updateCategoryBtn", function () {
+        var catagaryId = $(this).closest('tr').find('td').first().text();
+        console.log(catagaryId);
+        $("#editCategoryId").val(catagaryId);
+    });
 
     function loadCategories() {
         $.ajax({
@@ -137,130 +142,6 @@ $(document).ready(function () {
         });
     }
 
-    /*function loadLatestProducts() {
-        $.ajax({
-            url: "http://localhost:8080/api/v1/products/latest-per-category",
-            method: "GET",
-            headers: { "Authorization": "Bearer " + token },
-            success: function (response) {
-                console.log(response);
-                const contentContainer = $("#categoryContent");
-                const navContainer = $("#categoryNav");
-                contentContainer.empty();
-                navContainer.empty();
-
-                let isFirst = true;
-
-                // Loop through the response content object
-                $.each(response.content, function (categoryName, products) {
-                    let sectionId = categoryName.toLowerCase().replace(/\s+/g, '-');
-
-                    // Add category nav button
-                    navContainer.append(`
-                    <button class="category-button ${isFirst ? 'active' : ''}" data-category="${sectionId}">
-                        ${categoryName}
-                    </button>
-                `);
-
-                    // Create section for category products
-                    let section = $(`
-                    <div class="category-content ${isFirst ? 'active' : ''}" id="${sectionId}">
-                        <div class="products row"></div>
-                    </div>
-                `);
-
-                    // Add latest products to section
-                    products.forEach(product => {
-                        section.find(".products").append(`
-                        <div class="col-md-4 mb-3">
-                            <div class="card h-100 shadow-sm">
-                                <img src="http://localhost:8080/images/${product.imageUrl}" class="card-img-top" alt="${product.name}">
-                                <div class="card-body">
-                                    <h4 class="card-title">${product.name}</h4>
-                                    <p class="card-text">${product.description}</p>
-                                    <p class="card-text"><strong>Rs. ${product.price}</strong></p>
-                                    <button class="btn btn-outline-primary mt-2 btn-add-to-cart"
-                                        data-id="${product.productId}"
-                                        data-name="${product.name}"
-                                        data-price="${product.price}"
-                                        data-image="${product.imageUrl}">
-                                        Add
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `);
-                    });
-
-                    // Add "See More" button (load all products of category into same page)
-                    section.append(`
-                    <div class="text-end mt-3">
-                        <button class="btn btn-primary see-more-btn" data-category-name="${categoryName}">See More</button>
-                    </div>
-                `);
-
-                    contentContainer.append(section);
-                    isFirst = false;
-                });
-
-                // Category nav click handler
-                $(".category-button").on("click", function () {
-                    const selectedCategory = $(this).data("category");
-                    $(".category-button").removeClass("active");
-                    $(this).addClass("active");
-                    $(".category-content").removeClass("active");
-                    $(`#${selectedCategory}`).addClass("active");
-                });
-
-                // Load all products of the category in same page
-                $(document).on("click", ".see-more-btn", function () {
-                    const categoryName = $(this).data("category-name");
-                    const sectionId = categoryName.toLowerCase().replace(/\s+/g, '-');
-
-                    // Make backend call to get all products in the category
-                    $.ajax({
-                        url: `http://localhost:8080/api/v1/products/by-category/${encodeURIComponent(categoryName)}`,
-                        method: "GET",
-                        headers: { "Authorization": "Bearer " + token },
-                        success: function (allProducts) {
-                            const section = $(`#${sectionId}`);
-                            section.find(".products").empty(); // clear previous limited products
-
-                            // Loop through the response content object for all products
-                            allProducts.content.forEach(product => {
-                                section.find(".products").append(`
-                                <div class="col-md-4 mb-3">
-                                    <div class="card h-100 shadow-sm">
-                                        <img src="http://localhost:8080/images/${product.imageUrl}" class="card-img-top" alt="${product.name}">
-                                        <div class="card-body">
-                                            <h4 class="card-title">${product.name}</h4>
-                                            <p class="card-text">${product.description}</p>
-                                            <p class="card-text"><strong>Rs. ${product.price}</strong></p>
-                                            <button class="btn btn-outline-primary mt-2 btn-add-to-cart"
-                                                data-id="${product.productId}"
-                                                data-name="${product.name}"
-                                                data-price="${product.price}"
-                                                data-image="${product.imageUrl}">
-                                                Add
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            `);
-                            });
-                        },
-                        error: function () {
-                            console.error(`Failed to load all products for category: ${categoryName}`);
-                        }
-                    });
-                });
-            },
-            error: function () {
-                console.error("Failed to load latest products.");
-            }
-        });
-    }*/
-
     // Load products on page load
     loadProducts();
     loadLatestProducts();
@@ -296,33 +177,23 @@ $(document).ready(function () {
         });
     });
 
-    $("#updateProductBtn").click(function () {
-        let productId = $(this).data("id");
-
-        let formData = new FormData();
-        formData.append("name", $("#productName").val());
-        formData.append("categoryName", $("#productCategory").val()); // Use categoryName
-        formData.append("price", $("#productPrice").val());
-        formData.append("description", $("#productDescription").val());
-
-        let imageFile = $("#productImage")[0].files[0];
-        if (imageFile) {
-            formData.append("image", imageFile);
-        }
+    $("#updateCategoryForm").click(function () {
+        let catId = $("#editCategoryId").val()
+        console.log(catId)
+        let categoryData = {
+            name: $("#categoryUpdateName").val(),
+            status: $("#categoryUpdateStatus").val()
+        };
 
         $.ajax({
-            url: `http://localhost:8080/api/v1/products/update/${productId}`,
+            url: `http://localhost:8080/api/v1/categories/update/${catId}`,
             method: "PUT",
-            contentType: false,
-            processData: false,
+            contentType: "application/json",
             headers: {"Authorization": "Bearer " + token},
-            data: formData,
+            data: JSON.stringify(categoryData),
             success: function () {
-                loadProducts();
-                $("#productModal").modal("hide");
-                $("#productForm")[0].reset();
-                $("#saveProductBtn").show();
-                $("#updateProductBtn").hide();
+                loadCategories();
+                // $("#updateCategoryForm")[0].reset();
             }
         });
     });

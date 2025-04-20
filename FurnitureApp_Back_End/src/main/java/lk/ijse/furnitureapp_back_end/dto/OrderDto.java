@@ -18,4 +18,11 @@ public class OrderDto {
     private LocalDateTime orderDate;
     private double totalAmount;
     private Payment payment;
+
+    public OrderDto(UUID orderId, User user, LocalDateTime orderDate, double totalAmount) {
+        this.orderId = orderId;
+        this.user = user;
+        this.orderDate = orderDate;
+        this.totalAmount = totalAmount;
+    }
 }

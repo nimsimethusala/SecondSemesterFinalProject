@@ -108,101 +108,6 @@ $(document).on("click", ".btn-remove-from-cart", function () {
     displayCartItems();
 });
 
-// Save Cart to Backend
-/*$("#saveCart").click(function () {
-    if (cart.length === 0) {
-        Swal.fire("Oops!", "Your cart is empty!", "warning");
-        return;
-    }
-
-    // Build order summary
-    let summaryText = "";
-    let total = 0;
-
-    cart.forEach(item => {
-        const subTotal = item.price * item.quantity;
-        summaryText += `${item.name} x${item.quantity} = Rs. ${subTotal}\n`;
-        total += subTotal;
-    });
-
-    summaryText += `\nTotal: Rs. ${total}`;
-
-    Swal.fire({
-        title: "Order Summary",
-        text: summaryText,
-        icon: "info",
-        showCancelButton: true,
-        confirmButtonText: "Proceed to Payment",
-        cancelButtonText: "Cancel"
-    }).then(result => {
-        if (result.isConfirmed) {
-            Swal.fire({
-                title: "Simulate Payment",
-                input: "text",
-                inputLabel: "Enter Payment Reference ID",
-                inputPlaceholder: "e.g. PH123XYZ",
-                showCancelButton: true,
-            }).then(paymentResult => {
-                if (paymentResult.isConfirmed && paymentResult.value) {
-
-                    // Step 1: Save Cart (Optional - if needed)
-                    const cartPayload = {
-                        items: cart.map(item => ({
-                            productId: item.id,
-                            quantity: item.quantity
-                        }))
-                    };
-
-                    $.ajax({
-                        url: "/api/v1/cart/save",
-                        method: "POST",
-                        contentType: "application/json",
-                        data: JSON.stringify(cartPayload),
-                        success: function () {
-                            console.log("Cart saved.");
-
-                            // Step 2: Place Order
-                            const orderData = {
-                                userId: 1, // Replace with dynamic user ID if possible
-                                items: cart.map(item => ({
-                                    productId: item.id,
-                                    quantity: item.quantity,
-                                    price: item.price
-                                })),
-                                totalAmount: total,
-                                paymentRef: paymentResult.value
-                            };
-
-                            $.ajax({
-                                url: "http://localhost:8080/api/orders/place",
-                                method: "POST",
-                                contentType: "application/json",
-                                data: JSON.stringify(orderData),
-                                success: function (response) {
-                                    Swal.fire("Success", `Order placed! Order ID: ${response.orderId}`, "success");
-                                    cart = [];
-                                    updateCartCount();
-                                    displayCartItems();
-                                    $("#cartModal").modal("hide");
-                                },
-                                error: function () {
-                                    Swal.fire("Error", "Failed to place order.", "error");
-                                }
-                            });
-                        },
-                        error: function () {
-                            Swal.fire("Error", "Failed to save cart.", "error");
-                        }
-                    });
-
-                } else {
-                    Swal.fire("Cancelled", "Payment was not completed.", "info");
-                }
-            });
-        }
-    });
-});*/
-
 $("#saveCart").click(function () {
     if (cart.length === 0) {
         alert("Oops! Your cart is empty!");
@@ -245,16 +150,16 @@ $("#saveCart").click(function () {
                 success: function () {
                     console.log("Cart saved.");
 
+                    console.log(cart)
                     // 🔹 Step 2: Place Order
                     const orderPayload = {
                         userId: userId,
                         totalAmount: total,
                         items: cart.map(item => ({
-                            productId: item.id,
+                            id: item.id,
                             quantity: item.quantity,
                             price: item.price
                         })),
-                        paymentRef: "PAY-" + new Date().getTime()
                     };
 
                     $.ajax({

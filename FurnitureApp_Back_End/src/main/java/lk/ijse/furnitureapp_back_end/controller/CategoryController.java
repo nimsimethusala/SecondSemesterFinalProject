@@ -69,7 +69,7 @@ public class CategoryController {
     }
 
     @PutMapping("/update/{categoryId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ResponseDTO> update(@PathVariable String categoryId, @Valid @RequestBody CategoryDto category) {
         try {
             category.setCategoryId(UUID.fromString(categoryId));

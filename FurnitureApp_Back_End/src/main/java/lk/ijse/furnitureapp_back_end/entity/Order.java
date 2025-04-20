@@ -13,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -28,6 +29,6 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
-    @OneToOne
-    private Payment payment;
+    @OneToMany(mappedBy = "")
+    private List<Payment> order;
 }

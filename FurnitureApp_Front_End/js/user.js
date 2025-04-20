@@ -18,7 +18,7 @@ $(document).ready(function () {
                             <td>${user.role}</td>
                             <td>
                                 <button class="editUser btn btn-sm btn-warning" data-id="${user.id}"><i class="fas fa-edit"></i></button>
-                                <button class="deleteUser btn btn-sm btn-danger" data-id="${user.id}"><i class="fas fa-trash"></i></button>
+                                <button class="deleteUser btn btn-sm btn-danger" data-id="${user.email}"><i class="fas fa-trash"></i></button>
                             </td>
                         </tr>
                     `);
@@ -58,25 +58,6 @@ $(document).ready(function () {
             }
         });
     });
-
-    // $(document).on("click", ".editUser", function () {
-    //     let userId = $(this).data("id");
-    //
-    //     $.ajax({
-    //         url: `http://localhost:8080/api/v1/adminuser/update/${userId}`,
-    //         method: "GET",
-    //         headers: { "Authorization": "Bearer " + token },
-    //         success: function (user) {
-    //             $("#name").val(user.name);
-    //             $("#email").val(user.email);
-    //             $("#updateUserBtn").show().data("id", user.id);
-    //             $("#addUserBtn").hide();
-    //         },
-    //         error: function () {
-    //             alert("Error fetching user.");
-    //         }
-    //     });
-    // });
 
     $("#updateUserBtn").click(function () {
         let userId = $(this).data("id");

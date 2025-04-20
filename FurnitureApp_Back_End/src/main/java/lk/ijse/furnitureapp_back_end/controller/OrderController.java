@@ -1,8 +1,6 @@
 package lk.ijse.furnitureapp_back_end.controller;
 
-import lk.ijse.furnitureapp_back_end.dto.OrderDto;
-import lk.ijse.furnitureapp_back_end.dto.OrderRequestDto;
-import lk.ijse.furnitureapp_back_end.dto.ResponseDTO;
+import lk.ijse.furnitureapp_back_end.dto.*;
 import lk.ijse.furnitureapp_back_end.service.OrderService;
 import lk.ijse.furnitureapp_back_end.util.VarList;
 import org.springframework.http.HttpStatus;
@@ -10,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,7 +21,7 @@ public class OrderController {
     }
 
     @PostMapping("/place")
-    @PreAuthorize("hasAuthority('USER')")
+//    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<ResponseDTO> placeOrder(@RequestBody OrderRequestDto orderRequestDto) {
         System.out.println(orderRequestDto.toString());
         try {
@@ -45,6 +44,20 @@ public class OrderController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ResponseDTO(VarList.Internal_Server_Error, "Failed to fetch order", null));
+        }
+    }
+
+    @GetMapping("/getAllOrders")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
+    public ResponseEntity<ResponseDTO> getAll() {
+        try {
+            List<OrderResponseDto> orders = orderService.getAllOrders();
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseDTO(VarList.OK, "Orders Retrieved Successfully", orders));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
         }
     }
 }
