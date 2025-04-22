@@ -63,7 +63,7 @@ Follow these instructions to set up the project locally for development and test
    cd FurnitureHub
 
 YouTube Video
-https://youtu.be/NuKtJR_0EI0
+https://youtu.be/-lDFJph1TPk
 
 
 ![Screenshot 2025-04-16 232914](https://github.com/user-attachments/assets/190c0ed3-2992-4052-9ab4-d3f8849a6b8c)
