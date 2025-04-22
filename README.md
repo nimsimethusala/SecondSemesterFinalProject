@@ -59,75 +59,11 @@ Follow these instructions to set up the project locally for development and test
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/FurnitureHub.git
-   cd FurnitureHub
-
-YouTube # 🪑 Furniture
-
-Furniture is a full-stack web application designed to provide a smooth and interactive experience for customers looking to explore and purchase furniture online. It enables users to browse items, manage a shopping cart, and place orders, while admins can manage product listings, categories, and customer data.
-
-Inspired by modern eCommerce standards, this system aims to digitize the furniture shopping experience with user-friendly interfaces and efficient backend logic.
-
----
-
-## ✨ Features
-
-### 🛒 For Customers:
-- Browse categorized furniture items
-- View product details and images
-- Add items to a cart and update/remove them
-- Place orders with manual or PayHere payment options
-- View order history
-
-### 🛠️ For Admins:
-- Add, update, and delete furniture items
-- Manage product categories
-- View orders and customer information
-- Dashboard with charts (orders, revenue, etc.)
-
----
-
-## 🧩 Tech Stack
-
-### 🔷 Frontend
-- HTML
-- CSS
-- JavaScript
-
-### 🟩 Backend
-- Spring Boot
-- Spring Security
-- Spring Data JPA
-
-### 🔐 Authentication
-- BCrypt password hashing
-- Role-based access control
-
-### 🗃️ Database
-- MySQL
-
----
-
-## 🚀 Getting Started
-
-Follow these instructions to set up the project locally for development and testing purposes.
-
-### 📦 Prerequisites
-- JDK 17+
-- MySQL Server
-- Maven
-
----
-
-## 🔧 Backend Setup
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/yourusername/FurnitureHub.git
+   git clone https://github.com/nimsimethusala/SecondSemesterFinalProject.git
    cd FurnitureHub
 
 YouTube Video
-https://youtu.be/L_QCvdwZokQ
+https://youtu.be/NuKtJR_0EI0
 
 
 ![Screenshot 2025-04-16 232914](https://github.com/user-attachments/assets/190c0ed3-2992-4052-9ab4-d3f8849a6b8c)
