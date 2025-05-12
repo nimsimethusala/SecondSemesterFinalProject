@@ -21,13 +21,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-
-/**
- * @author udarasan
- * @TimeStamp 2023-07-15 15:00
- * @ProjectDetails invoice_service
- */
-
 @EnableWebSecurity
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
@@ -63,11 +56,7 @@ public class WebSecurityConfig {
                                 "/api/v1/auth/refreshToken",
                                 "/v3/api-docs/**",
                                 "/api/v1/users/all",
-//                                "/api/v1/adminuser/all",
                                 "/api/v1/categories/getAll",
-//                                "/api/v1/categories/names",
-//                                "/api/v1/products/getAll",
-//                                "/api/v1/products/category/**",
                                 "api/v1/products/latest-per-category",
                                 "/swagger-ui/**",
                                 "/images/**",
@@ -86,7 +75,7 @@ public class WebSecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configure = new CorsConfiguration();
         configure.setAllowCredentials(true);
-        configure.addAllowedOrigin("http://localhost:63342");
+        configure.addAllowedOrigin("http://localhost:63343");
         configure.addAllowedHeader("*");
         configure.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", configure);

@@ -17,7 +17,7 @@ $(document).ready(function () {
                             <td>${user.email}</td>
                             <td>${user.role}</td>
                             <td>
-                                <button class="editUser btn btn-sm btn-warning" data-id="${user.id}"><i class="fas fa-edit"></i></button>
+                                <button class="editUser btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#userModal" id="updateUserBtn" data-id="${user.id}"><i class="fas fa-edit"></i></button>
                                 <button class="deleteUser btn btn-sm btn-danger" data-id="${user.email}"><i class="fas fa-trash"></i></button>
                             </td>
                         </tr>
